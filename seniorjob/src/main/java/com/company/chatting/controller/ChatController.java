@@ -57,7 +57,6 @@ public class ChatController {
 		}
 	}
 	
-	
 	//내가 입력하는 메세지
 	@OnMessage
 	public void onMessage(String message, Session session) {

@@ -35,10 +35,7 @@ input#searchKeyword {
     height: 60px;
 }
 
-
-
 /* 이미지 슬라이드 */
-
 /* Slideshow container */
 .slideshow-container {
   max-width: 260px;
@@ -194,6 +191,8 @@ input#mentoring_kind {
 button#search {
     width: 146px;
     height: 61px;
+    margin-top:125px;
+    margin-left:-600px;
 }
 div#searchBox5 {
     left: -21px;
@@ -228,12 +227,7 @@ div#intro154w {
 <!-- topHeader -->
 <jsp:include page="../topHeader.jsp" />
 <!-- topHeader -->
-<%-- <c:if test="${not empty list }">
-	<h1 class="display-4" id="mainCopy">현직자 멘토와 함께 직무경험을 쌓아보세요!</h1>
-	<footer class="blockquote-footer" style="text-align:center">아래 원하는 멘토링을 클릭하면 해당 멘토링 상세 정보 확인이 가능합니다.</footer>
-</c:if> --%>
 
-	<!-- 멘토링 리스트 출력 -->
 	<br>
 	<!-- 페이징 & 검색 -->
 	<form method="POST" action="getMentoringList" id="searchDateFrm" name="searchDateFrm">
@@ -296,7 +290,7 @@ div#intro154w {
 		      <div class="mySlides fade">
 		        <div class="numbertext">1 / 6</div>
 		        <a href="getSearchMentoringChanGon?mentor_id=${random.mentor_id }&mentoring_number=${random.mentoring_number }&mentoring_kind=${random.mentoring_kind }&mentoring_begin_date=${random.mentoring_begin_date }&mentoring_end_date=${random.mentoring_end_date }">
-		        <img src="image/${random.mentoring_photo }" style="width:100%"></a>
+		        <img src="image/mentoring_img/${random.mentoring_photo }" style="width:100%"></a>
 		        <div class="text"></div>
 		      </div>
 		
@@ -345,7 +339,7 @@ div#intro154w {
 							<input type="hidden" id="mentoring_end_date" name="mentoring_end_date" value="${mentoring.mentoring_end_date }">
 								<div class="box-two proerty-item">
 									<div class="item-thumb">
-										<img src="image/${mentoring.mentoring_photo }" id="imgd">
+										<img src="image/mentoring_img/${mentoring.mentoring_photo }" id="imgd">
 									</div>
 									<div class="item-entry overflow" id="overflow123">
 										<h5>	
@@ -400,6 +394,7 @@ div#intro154w {
 										
 									</div>
 								</div>
+							</div>
 							</form>
 						</div>
 					</div>
@@ -408,7 +403,6 @@ div#intro154w {
 				
 			</div>
 		</div>
-	</div>
 	<!-- End of 멘토 리스트 출력 -->
 	
 	

@@ -15,7 +15,6 @@ import com.company.certificate.service.CertificateVO2;
 import com.company.certificate.service.impl.CertificateMapper;
 import com.company.mentor.service.MentorService;
 import com.company.mentor.service.MentorVO;
-import com.company.mentoring.service.MentoringService;
 import com.company.mentoring.service.MentoringVO;
 import com.company.portfolio.service.PortfolioVO;
 import com.company.portfolio.service.impl.PortfolioMapper;
@@ -91,8 +90,7 @@ public class ResumeController {
 	
 	//이력서 팝업조회
 		@RequestMapping("/popResumeGetForm")
-		public String popResumeGetForm(Model model, ResumeVO vo, Self_InfoVO selfvo, CertificateVO2 certivo,
-				PortfolioVO portvo) {
+		public String popResumeGetForm(Model model, ResumeVO vo, Self_InfoVO selfvo, CertificateVO2 certivo, PortfolioVO portvo) {
 			vo = resumemapper.getResume(vo);
 			model.addAttribute("resumeVO", vo);
 			selfvo.setResume_no(vo.getResume_no()); // resume 테이블의 resume_no라는 거 명시

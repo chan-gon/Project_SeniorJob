@@ -112,7 +112,7 @@
 				RESUME_AREA, 
 				RESUME_START, 
 				RESUME_END, 
-				ID,
+				ID,	
 				COLLECTION, 
 				IMAGE,
 				RESUME_TITLE,

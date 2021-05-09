@@ -2,12 +2,7 @@
     pageEncoding="UTF-8"%> 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>    
 <!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!-->
 <html class="no-js">
-<!--<![endif]-->
 <head>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -75,8 +70,6 @@
 		certi.remove();
 	})
 	
-	
-	
 	/* 자기소개서 추가 */
 	$(document).on("click", "#selfPl", function(){
 		var count = $(".self_this").length;
@@ -90,8 +83,6 @@
 		var self = $(this).closest('.self_this');
 		self.remove();
 	})
-	
-	
 	
 	$(document).ready(function(){
 		$("textarea").keyup(function(){
@@ -120,12 +111,11 @@
 			}
 		}
 		reader.readAsDataURL(event.target.files[0]);
-		
 	}
 	
 </script>
 <style>
-	.select_img img{width: 90px; height:90px; margin:20px 0;}
+.select_img img{width: 90px; height:90px; margin:20px 0;}
 </style>
     <body>
         <!-- property area -->
@@ -151,7 +141,6 @@
                                             <label>사진</label>
                                             <div class="select_img">
 	                                            <img src="image/${resumeVO.image }">
-<%-- 	                                            <input type="hidden" name="image" id="image" value="${resumeVO.image }"> --%>
 	                                            <div id="image_container" name="image_container" class="select_img"></div>
                                             </div>
                                         </div>

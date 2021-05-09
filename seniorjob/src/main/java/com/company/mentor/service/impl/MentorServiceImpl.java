@@ -65,8 +65,7 @@ public class MentorServiceImpl implements MentorService {
 			//String careerFileName = careerFile.getOriginalFilename();
 			
 			// 파일 저장소 경로 확인
-			String path = request.getServletContext().getRealPath("image");
-			System.out.println("나의경로 ===================== " + request.getServletContext().getRealPath("image"));
+			String path = request.getServletContext().getRealPath("image/mentor_img/");
 			
 			// 파일 이름 중복 처리
 			// 동일 파일 처리 시 파일 이름 뒤에 숫자 삽입

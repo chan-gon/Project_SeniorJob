@@ -2,10 +2,6 @@
     pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> 
 <html class="no-js"> <!--<![endif]-->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
@@ -58,7 +54,7 @@ function menteeList(num) {
                                 <div class="col-md-4 p0">
                                     <div class="box-two proerty-item">
                                         <div class="item-thumb">
-                                            <a href="property-1.html" ><img src="image/${list.mentoring_photo }"></a>
+                                            <a href="property-1.html" ><img src="image/mentoring_img/${list.mentoring_photo }"></a>
                                         </div>
                                         
                                         <div class="item-entry overflow">
@@ -78,8 +74,6 @@ function menteeList(num) {
                             </div>
                         </div>
 						</c:forEach>
-                        
-
                     </div>       
 
         

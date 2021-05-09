@@ -362,7 +362,7 @@ h1{text-align:center}
                         <div class="panel-body">
                             <div class="form-group">
                                 <div class="col-sm-3 col-xs-3">
-                                    <img class="img-responsive" src="image/${mentoring.mentoring_photo }" />
+                                    <img class="img-responsive" src="image/mentoring_img/${mentoring.mentoring_photo }" />
                                 </div>
                                 <div class="col-sm-6 col-xs-6">
                                     <div class="col-xs-12">${mentoring.mentoring_name }</div>

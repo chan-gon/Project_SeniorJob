@@ -24,10 +24,10 @@
 					<div class="col-sm-6 col-md-3">
                             <div class="box-two proerty-item">
                                 <div class="item-thumb">
-                                    <a href="getMentor?mentor_id=${follow.mentor_id }"><img src="resources/assets/img/demo/property-1.jpg"></a>
+                                    <a href="getMentor?mentor_id=${follow.mentor_id }"><img src="image/mentor_img/${follow.mentorVO.mentor_photo }"></a>
                                 </div>
                                 <div class="item-entry overflow">
-                                    <h5><a href="getMentor?mentor_id=${follow.mentor_id }">${follow.mentor_id }</a></h5>
+                                    <h5>멘토 이름: <a href="getMentor?mentor_id=${follow.mentor_id }">${follow.usersVO.name }</a></h5>
                                     <div class="dot-hr"></div>
                                     <span class="pull-left"><b>팔로우 상태 :</b> 팔로우중 </span>
                                 </div>

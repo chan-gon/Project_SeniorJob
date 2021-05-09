@@ -33,7 +33,7 @@ public class MentoringServiceImpl implements MentoringService {
 			String photoFileName = photoFile.getOriginalFilename();
 			
 			// 파일 저장소 경로 확인
-			String path = request.getServletContext().getRealPath("image");
+			String path = request.getServletContext().getRealPath("image/mentoring_img/");
 			
 			// 파일 이름 중복 처리
 			// 동일 파일 처리 시 파일 이름 뒤에 숫자 삽입

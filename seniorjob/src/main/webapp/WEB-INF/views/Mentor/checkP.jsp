@@ -56,30 +56,28 @@ th {
     text-align: center;
   }
 </style>
-    </head>
+</head>
 <body>
 
-					<h2>첨삭요청 리스트</h2>
-					<hr>
-					<br>
-  <table border="1" align="center">
+	<h2>첨삭요청 리스트</h2>
+	<hr>
+	<br>
+	<table border="1" align="center">
 		<thead>
-		<tr>
-			<th width="300px">제목</th>
-			<th width="100px">멘티아이디</th>
-		</tr>
+			<tr>
+				<th width="300px">제목</th>
+				<th width="100px">멘티아이디</th>
+			</tr>
 		</thead>
 		<tbody>
-            <c:forEach items="${list}" var="list">
-			<tr>
-                <td onclick="detail('${list.seq}')">${list.title } </td>
-				<td>${list.id } </td>
-			</tr>
+			<c:forEach items="${list}" var="list">
+				<tr>
+					<td onclick="detail('${list.seq}')">${list.title }</td>
+					<td>${list.id }</td>
+				</tr>
 			</c:forEach>
 		</tbody>
-	</table>  
-
-
+	</table>
 
 </body>
 <script src="resources/assets/js/modernizr-2.6.2.min.js"></script>

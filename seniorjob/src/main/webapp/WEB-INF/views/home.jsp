@@ -201,9 +201,6 @@ $(document).ready(function() {
 				var hr2 = $('<hr />');
 				var hr3 = $('<hr />');
 				
-				
-				
-				
 				var a = $('<a />').attr('id','aTag1').attr('onclick','video()').attr('class','dropdown-item').html('영상면접');
 				var a2 = $('<a />').attr('id','aTag2').attr('onclick','resum()').attr('class','dropdown-item').html('이력서보기'); //나중에 영상면접 화면에 붙일 것.
 				var a3 = $('<a />').attr('id','aTag3').attr('onclick','chatt()').attr('class','dropdown-item').html('채팅'); //나중에 영상면접 화면에 붙일 것.
@@ -232,19 +229,17 @@ $(document).ready(function() {
         $("#slidemenu").stop().animate({"top":position+currentPosition+"px"},1000);
     });
 });
+
 function video(){
-	window.open("https://192.168.0.56:85",
-            "영상", "width=900, height=900, resizable = no, scrollbars = no");
+	window.open("https://192.168.0.56:85", "영상", "width=900, height=900, resizable = no, scrollbars = no");
 }
 function resum(){
 	var num=$("#numSom").val();
 	//console.log(num)
-	window.open("popResumeGetForm?resume_no="+num,
-            "이력서", "width=900, height=900, resizable = no, scrollbars = no");
+	window.open("popResumeGetForm?resume_no="+num, "이력서", "width=900, height=900, resizable = no, scrollbars = no");
 }
 function chatt() {
-	window.open("chat",
-            "채팅", "width=500, height=600, resizable = no, scrollbars = no");
+	window.open("chat", "채팅", "width=500, height=600, resizable = no, scrollbars = no");
 }
 </script>
 </head>
@@ -253,10 +248,6 @@ function chatt() {
 	<jsp:include page="topHeader.jsp" />
 	<!-- 영상통화 구현. 절대 지우지 마세요 . 양소민-->
 	<div class="dropdown" id="slidemenu" ></div>
-	
-	
-	
-	
 	
 	<input type="hidden" id="numSom">
 	<input type="hidden" id="authSom" value="${users.auth }">

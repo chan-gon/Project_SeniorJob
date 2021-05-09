@@ -50,6 +50,8 @@
 
 <!-- topHeader -->
 <jsp:include page="../topHeader.jsp" />
+<!-- topHeader -->
+
 <c:if test="${not empty list }">
 	<h1 class="display-4" id="mainCopy">나에게 꼭 맞는 멘토를 찾아보세요!</h1>
 	<footer class="blockquote-footer" style="text-align:center">아래 원하는 멘토 프로필 카드를 클릭하면 멘토의 상세 프로필 정보 확인이 가능합니다.</footer>
@@ -58,15 +60,13 @@
 	<h1 class="display-4" id="mainCopy">찾으시는 멘토 정보가 없습니다.</h1>
 	<button class="btn btn-primary" onclick="history.back(-1)" style="margin:auto; display:block;">뒤로가기</button>
 </c:if>
-<!-- topHeader -->
+
 <div id="listResult"></div>
-          <!-- property area -->
-          
         <div class="properties-area recent-property" style="background-color: #FFF;">
             <div class="container">   
                 <div class="row">
                     
-<!-- 멘토 세부검색(최신순/인기순)_값(list)이 있을 때만 출력 ----------------------------------------------------------------------------------------------------->
+<!-- 멘토 리스트 / 멘토 세부검색(최신순/인기순)_값(list)이 있을 때만 출력 ----------------------------------------------------------------------------------------------------->
 				<div class="col-md-9 padding-top-40 properties-page" id="optionVal">
 					<div class="section clear">
 						<div class="col-xs-10 page-subheader sorting pl0">
@@ -95,15 +95,17 @@
 							<form name="mentorListFrm">
 								<%-- <div class="col-sm-6 col-md-4 p0" id="mentor_id" name="mentor_id" onclick="location.href='getMentor?mentor_id=${mentor.mentor_id}'" > --%>
 								<div class="col-sm-6 col-md-4 p0" id="mentor_id" name="mentor_id" onclick="location.href='getMentor?mentor_id=${mentor.mentor_id}'" style="cursor:pointer" >
+									
 									<div class="box-two proerty-item">
 										<div class="item-thumb">
 										<c:if test="${not empty mentor.mentor_photo }">
-											<img src="image/${mentor.mentor_photo }" id="myPhoto">
+											<img src="image/mentor_img/${mentor.mentor_photo }" id="myPhoto">
 										</c:if>
+										<!-- 멘토 사진이 등록되지 않았을 경우(관련 에러 발생 시) 기본 사진 등록 -->
 										<c:if test="${empty mentor.mentor_photo }">
-											<img src="resources/assets/img/mentor/photoDefault.jpg">
+											<img src="image/mentor_img/photoDefault.jpg">
 										</c:if>
-										</div>	
+									</div>	
 
 										<div class="item-entry overflow" id="mainContents">
 											<h5 id="name" >${mentor.usersVO.name }<b class="property-info-unit">멘토</b></h5>
@@ -227,7 +229,7 @@
 				var div2 = $("<div>").attr({ 'id':"list-type",'class':"proerty-th" });
 				var div3 = $("<div>").attr({ 'class':"col-sm-6 col-md-4 p0",id:"mentor_id"}).data('id',response[i].mentor_id);
 				var div4 = $("<div>").attr("class", "box-two proerty-item");
-				var div5 = $("<div>").attr("class","item-thumb").append($("<img>").attr("src","image/"+response[i].mentor_photo));
+				var div5 = $("<div>").attr("class","item-thumb").append($("<img>").attr("src","image/mentor_img/"+response[i].mentor_photo));
 				
 				var div6 = $("<div>").attr("class","item-entry overflow");
 				

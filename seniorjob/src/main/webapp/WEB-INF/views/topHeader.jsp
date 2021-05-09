@@ -3,34 +3,18 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <title>GARO ESTATE | Home page</title>
-        <meta name="description" content="GARO is a real-estate template">
-        <meta name="author" content="Kimarotec">
-        <meta name="keyword" content="html5, css, bootstrap, property, real-estate theme , bootstrap template">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!-->
-<html class="no-js">
-<!--<![endif]-->
 <head>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<title>GARO ESTATE | Home page</title>
+<title>시니어잡</title>
 <meta name="description" content="GARO is a real-estate template">
 <meta name="author" content="Kimarotec">
 <meta name="keyword"
 	content="html5, css, bootstrap, property, real-estate theme , bootstrap template">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<link
-	href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,700,800'
-	rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,700,800' rel='stylesheet' type='text/css'>
 
-<!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
 <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 
@@ -49,39 +33,37 @@
         <link rel="stylesheet" href="resources/assets/css/owl.transitions.css">
         <link rel="stylesheet" href="resources/assets/css/style.css">
         <link rel="stylesheet" href="resources/assets/css/responsive.css">
-  
-    </head>
-    <body>
-<link rel="stylesheet" href="resources/assets/css/normalize.css">
-<link rel="stylesheet" href="resources/assets/css/font-awesome.min.css">
-<link rel="stylesheet" href="resources/assets/css/fontello.css">
-<link
-	href="resources/assets/fonts/icon-7-stroke/css/pe-icon-7-stroke.css"
-	rel="stylesheet">
-<link href="resources/assets/fonts/icon-7-stroke/css/helper.css"
-	rel="stylesheet">
-<link href="resources/assets/css/animate.css" rel="stylesheet"
-	media="screen">
-<link rel="stylesheet"
-	href="resources/assets/css/bootstrap-select.min.css">
-<link rel="stylesheet" href="resources/bootstrap/css/bootstrap.min.css">
-<link rel="stylesheet" href="resources/assets/css/icheck.min_all.css">
-<link rel="stylesheet" href="resources/assets/css/price-range.css">
-<link rel="stylesheet" href="resources/assets/css/owl.carousel.css">
-<link rel="stylesheet" href="resources/assets/css/owl.theme.css">
-<link rel="stylesheet" href="resources/assets/css/owl.transitions.css">
-<link rel="stylesheet" href="resources/assets/css/style.css">
-<link rel="stylesheet" href="resources/assets/css/responsive.css">
-<!--summernote  -->
 
-<link rel="stylesheet" href="/css/summernote/summernote-lite.css">
-<!--summernote  -->
+		<link rel="stylesheet" href="resources/assets/css/normalize.css">
+		<link rel="stylesheet" href="resources/assets/css/font-awesome.min.css">
+		<link rel="stylesheet" href="resources/assets/css/fontello.css">
+		<link
+			href="resources/assets/fonts/icon-7-stroke/css/pe-icon-7-stroke.css"
+			rel="stylesheet">
+		<link href="resources/assets/fonts/icon-7-stroke/css/helper.css"
+			rel="stylesheet">
+		<link href="resources/assets/css/animate.css" rel="stylesheet"
+			media="screen">
+		<link rel="stylesheet"
+			href="resources/assets/css/bootstrap-select.min.css">
+		<link rel="stylesheet" href="resources/bootstrap/css/bootstrap.min.css">
+		<link rel="stylesheet" href="resources/assets/css/icheck.min_all.css">
+		<link rel="stylesheet" href="resources/assets/css/price-range.css">
+		<link rel="stylesheet" href="resources/assets/css/owl.carousel.css">
+		<link rel="stylesheet" href="resources/assets/css/owl.theme.css">
+		<link rel="stylesheet" href="resources/assets/css/owl.transitions.css">
+		<link rel="stylesheet" href="resources/assets/css/style.css">
+		<link rel="stylesheet" href="resources/assets/css/responsive.css">
+		<!--summernote  -->
+		<link rel="stylesheet" href="/css/summernote/summernote-lite.css">
+		<!--summernote  -->
 <style>
 .col-md-2.col-md-offset-5.col-sm-3.col-sm-offset-1.col-xs-12.topHeader {
     right: -409px;
 }
 li#li22 {
     width: 470px;
+    margin-left:-900px;
 }
 ul.list-inline.topHeader {
     height: 51px;
@@ -123,18 +105,15 @@ div#btnNav {
 									<a href="logout">로그아웃</a></li>
 								</c:when>
 								<c:when test="${users.auth eq 'USER'}">
-									<li id="li22"><a href="#">${sessionScope.users.id}님
-											환영합니다</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+									<li id="li22"><a href="#">${sessionScope.users.id}님 환영합니다</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 									<a href="logout">로그아웃</a></li><li></li>
 								</c:when>
 								<c:when test="${not empty userInfo}">
-									<li id="li22"><a href="#">${sessionScope.userInfo.kakaoId}님
-											환영합니다</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+									<li id="li22"><a href="#">${sessionScope.userInfo.kakaoId}님 환영합니다</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 									<a href="logout">로그아웃</a></li>
 								</c:when>
 								<c:when test="${users.auth eq 'MENTOR'}">
-									<li id="li22"><a href="#">${sessionScope.users.id}님
-											환영합니다</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+									<li id="li22"><a href="#">${sessionScope.users.id}님 환영합니다</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 									<a href="logout">로그아웃</a></li>
 								</c:when>
 								<c:when test="${users.auth eq null}">
@@ -181,8 +160,6 @@ div#btnNav {
 					</div>
 				</c:if>
 				
-				
-
 				<ul class="main-nav nav navbar-nav navbar-right">
 					<li id="topHeaderLi"class="wow fadeInDown" data-wow-delay="0.3s"
 						style="width: 150px; height: 100px"><h4><a class=""
@@ -207,13 +184,9 @@ div#btnNav {
 							href="mypageHome"><strong>마이페이지</strong></a></h4></li>
 					</c:if>
 					
-					
 				</ul>
 			</div>
-			<!-- /.navbar-collapse -->
 		</div>
-		<!-- /.container-fluid -->
 	</nav>
-	<!-- End of nav bar -->
 </body>
 </html>

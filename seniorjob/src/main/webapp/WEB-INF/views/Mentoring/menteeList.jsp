@@ -54,32 +54,30 @@ th {
     </head>
 <body>
 
-					<h2>멘티 리스트</h2>
-					<hr>
-					<br>
-  <table border="1" align="center">
+	<h2>멘티 리스트</h2>
+	<hr>
+	<br>
+	<table border="1" align="center">
 		<thead>
-		<tr>
-			<th width="300px">멘티</th>
-			<th width="100px">멘토링 요청</th>
-		</tr>
+			<tr>
+				<th width="300px">멘티</th>
+				<th width="100px">멘토링 요청</th>
+			</tr>
 		</thead>
 		<tbody>
-            <c:forEach items="${list}" var="list">
-            <form name="requestForm" action="requestMentoring"  method="post">
-			<tr>
-                <td>${list.menteeId }
-				<input type="hidden" name="mentorid" value="${list.id }">
-  				<input type="hidden" name="menteeid" value="${list.menteeId }">
-				</td>
-				<td><button type="submit" class="btn btn-primary">멘토링 요청</button></td>
-				</tr>
+			<c:forEach items="${list}" var="list">
+				<form name="requestForm" action="requestMentoring" method="post">
+					<tr>
+						<td>${list.menteeId }<input type="hidden" name="mentorid"
+							value="${list.id }"> <input type="hidden" name="menteeid"
+							value="${list.menteeId }">
+						</td>
+						<td><button type="submit" class="btn btn-primary">멘토링 요청</button></td>
+					</tr>
 				</form>
 			</c:forEach>
 		</tbody>
-	</table>  
-
-
+	</table>
 
 </body>
 <script src="resources/assets/js/modernizr-2.6.2.min.js"></script>
