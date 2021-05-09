@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="com.company.cart.service.impl.CartMapper">
+ <select id="getSearchCartList" resultType="com.company.cart.service.CartVO">
+ 	SELECT 
+ 		   C.CART_NO, 
+ 		   C.MENTORING_NAME, 
+ 		   C.CART_START, 
+ 		   C.CART_END, 
+ 		   C.CART_PRICE, 
+ 		   C.ID,
+ 		   C.MENTOR_ID,
+ 		   M.MENTORING_NUMBER "mtNum.mentoring_number"
+	FROM   
+		   CART C, MENTORING M
+	WHERE
+		   C.MENTOR_ID = M.MENTOR_ID 
+	AND        C.MENTORING_NAME = M.MENTORING_NAME 
+	ORDER BY 
+		   C.CART_NO	
+ </select>
+ <insert id="insertCart">
+ 	INSERT INTO CART (CART_NO, 
+		 			  MENTORING_NAME, 
+		 			  CART_START, 
+		 			  CART_END, 
+		 			  CART_PRICE, 
+		 			  ID,
+		 			  MENTOR_ID)
+	values		((SELECT NVL(MAX(CART_NO), 0) + 1 FROM CART),
+				#{mentoring_name},
+				TO_DATE(#{cart_start}, 'yyyy-MM-dd'),
+				TO_DATE(#{cart_end}, 'yyyy-MM-dd'),
+				#{cart_price},
+				#{id},
+				#{mentor_id}
+				)
+ </insert>
+ <delete id="deleteCart">
+ 	DELETE FROM CART WHERE CART_NO = #{cart_no}
+ </delete>
+  <delete id="deleteCartAll">
+ 	DELETE FROM CART WHERE ID = #{id}
+ </delete>
+ <delete id="deleteSub">
+ 	DELETE FROM CART WHERE CART_NO = ${cart_no}
+ </delete>
+ <update id="updateCart">
+ 	UPDATE SET MENTORING_NAME = #{mentoring_name},
+ 			   CART_START = #{cart_start},
+ 			   CART_END = #{cart_end},
+ 			   CART_PRICE = #{cart_price}
+	WHERE CART_NO = #{cart_no} 			   
+ </update>
+ <select id="getCart" resultType="com.company.cart.service.CartVO">
+ 	SELECT CART_NO, 
+ 		   MENTORING_NAME, 
+ 		   CART_START, 
+ 		   CART_END, 
+ 		   CART_PRICE, 
+ 		   ID,
+ 		   MENTOR_ID
+	FROM   CART
+	WHERE  CART_NO = ${cart_no} 	
+ </select>
+ <select id="countCart" resultType="int">
+ 	SELECT COUNT(*)
+ 	FROM   CART
+ 	WHERE  ID = #{id}
+ 	AND MENTORING_NAME = #{mentoring_name}
+ </select>
+ </mapper>

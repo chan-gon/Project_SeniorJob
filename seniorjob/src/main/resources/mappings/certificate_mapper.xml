@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="com.company.certificate.service.impl.CertificateMapper">
+	<select id="getSearchCertiList" resultType="com.company.certificate.service.CertificateVO2">
+		SELECT CERTI_NO, 
+			   RESUME_NO,
+			   CERTI_KINDS, 
+			   CERTI_NAME, 
+			   CERTI_PLACE, 
+			   ACCEPT, 
+			   CERTI_DATE
+		FROM   CERTIFICATE
+	</select>
+	<insert id="insertCerti">
+		INSERT INTO CERTIFICATE(CERTI_NO, 
+								RESUME_NO,
+								CERTI_KINDS, 
+								CERTI_NAME, 
+								CERTI_PLACE, 
+								ACCEPT, 
+								CERTI_DATE)
+		VALUES					(( SELECT NVL(MAX(CERTI_NO), 0) +1 FROM CERTIFICATE  ), 
+								 #{resume_no},
+								 #{certi_kinds}, 
+								 #{certi_name}, 
+								 #{certi_place}, 
+								 #{accept}, 
+								 TO_DATE(#{certi_date}, 'yyyy-MM-dd'))
+	</insert>
+	<update id="updateCerti">
+		UPDATE CERTIFICATE SET CERTI_KINDS=#{certi_kinds}, 
+							   CERTI_NAME=#{certi_name}, 
+							   CERTI_PLACE=#{certi_place}, 
+							   ACCEPT=#{accept}, 
+							   CERTI_DATE=TO_DATE(#{certi_date}, 'yyyy-MM-dd')
+		WHERE 				   CERTI_NO=#{certi_no}
+	</update>
+	<delete id="deleteCerti">
+		DELETE FROM CERTIFICATE WHERE CERTI_NO = #{certi_no}
+	</delete>
+	<select id="getCerti" resultType="com.company.certificate.service.CertificateVO2">
+		SELECT CERTI_NO, 
+			   RESUME_NO,
+			   CERTI_KINDS, 
+			   CERTI_NAME, 
+			   CERTI_PLACE, 
+			   ACCEPT, 
+			   CERTI_DATE
+		FROM   CERTIFICATE
+		WHERE  RESUME_NO = #{resume_no}
+	</select>
+ </mapper>

@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="com.company.service_center.service.impl.Service_CenterMapper">
+<!--공지사항 단건 조회 -->
+	<select id="getService_Center" resultType="Service_CenterVO"
+				parameterType="Service_CenterVO">
+	select seq, category_a, category_b, w_date,
+	click, content, s_file, id, title from service_center
+	 WHERE SEQ = #{seq}  and CATEGORY_a='공지사항' 
+	</select>	
+	<!--공지사항 -조회수 증가  -->
+	<update id="updateClick" parameterType="Service_CenterVO">
+  		UPDATE service_center SET click = click + 1 WHERE SEQ = #{seq}
+	</update>
+	<!--공지사항 페이징 처리(1) 페이지 갯수 체크  -->
+	<select id="listCount"  parameterType="SearchCriteria" resultType="int">
+		SELECT COUNT(SEQ) 
+		FROM service_center
+		WHERE  1=1 and CATEGORY_a='공지사항' 
+		<include refid="search"></include>
+		AND SEQ > 0	  
+	</select>
+	<!--공지사항 검색 -->
+	<sql id="search">
+		<if test="searchType != null">
+				<if test="searchType == 't'.toString()">AND TITLE LIKE '%' || #{keyword} || '%'</if>
+				<if test="searchType == 'c'.toString()">AND CONTENT LIKE '%' || #{keyword} || '%'</if>
+				<if test="searchType == 'w'.toString()">AND ID LIKE '%' || #{keyword} || '%'</if>
+				<if test="searchType == 'tc'.toString()">AND (TITLE LIKE '%' || #{keyword} || '%') or (CONTENT LIKE '%' || #{keyword} || '%')</if>
+		</if>
+	</sql>
+	<!--공지사항 페이징 처리(2) 페이지 처리 후 게시글 조회  -->
+	<select id="list" resultType="Service_CenterVO" parameterType="Service_CenterVO">
+		select 	SEQ, CATEGORY_A, CATEGORY_B, W_DATE, CLICK, CONTENT, S_FILE, ID, TITLE 
+		from ( SELECT SEQ, CATEGORY_A, CATEGORY_B, W_DATE, CLICK, CONTENT, S_FILE, ID,TITLE, 
+					  ROW_NUMBER() OVER(ORDER BY SEQ DESC) AS RNUM
+			   FROM SERVICE_CENTER where 1=1 and CATEGORY_a='공지사항' 
+		<include refid="search"></include>) 
+		SERVCIE_CENTER WHERE RNUM BETWEEN #{rowStart} AND #{rowEnd}
+		ORDER BY SEQ DESC
+	</select>
+	<!--공지사항 페이징 처리(2) 페이지 처리 후 게시글 조회  --><!--최신순  -->
+	<select id="listDate" resultType="Service_CenterVO" parameterType="Service_CenterVO">
+		select 	SEQ, CATEGORY_A, CATEGORY_B, W_DATE, CLICK, CONTENT, S_FILE, ID, TITLE 
+		from ( SELECT SEQ, CATEGORY_A, CATEGORY_B, W_DATE, CLICK, CONTENT, S_FILE, ID,TITLE, 
+					  ROW_NUMBER() OVER(ORDER BY SEQ DESC) AS RNUM
+			   FROM SERVICE_CENTER where 1=1 and CATEGORY_a='공지사항' 
+		<include refid="search"></include>) 
+		SERVCIE_CENTER WHERE RNUM BETWEEN #{rowStart} AND #{rowEnd}
+		ORDER BY W_DATE DESC
+	</select>
+	<!--공지사항 페이징 처리(2) 페이지 처리 후 게시글 조회  --><!--조회수 높은 순  -->
+	<select id="listClick" resultType="Service_CenterVO" parameterType="Service_CenterVO">
+		select 	SEQ, CATEGORY_A, CATEGORY_B, W_DATE, CLICK, CONTENT, S_FILE, ID, TITLE 
+		from ( SELECT SEQ, CATEGORY_A, CATEGORY_B, W_DATE, CLICK, CONTENT, S_FILE, ID,TITLE, 
+					  ROW_NUMBER() OVER(ORDER BY SEQ DESC) AS RNUM
+			   FROM SERVICE_CENTER where 1=1 and CATEGORY_a='공지사항'
+		<include refid="search"></include>) 
+		SERVCIE_CENTER WHERE RNUM BETWEEN #{rowStart} AND #{rowEnd}
+		ORDER BY CLICK DESC
+	</select>
+	
+	<!--공지사항 이전글, 다음글-->
+	<select id="preNext" resultType="Service_CenterVO" parameterType="Service_CenterVO">
+	select seq, prev, prev_title,  next, next_title 
+			FROM (
+  					SELECT  SEQ, 
+    						LAG(SEQ,1) OVER(ORDER BY SEQ) PREV,
+						    LAG(TITLE,1) OVER(ORDER BY SEQ) PREV_TITLE,    
+						    LEAD(SEQ,1) OVER(ORDER BY SEQ) NEXT, 
+						    LEAD(TITLE,1) OVER(ORDER BY SEQ) NEXT_TITLE
+ 		FROM SERVICE_CENTER
+ 		where CATEGORY_a='공지사항' )
+ 		WHERE SEQ= #{seq}  
+ 	</select>
+ 	<!--공지사항 글 등록  -->
+ 	<insert id="insertService_Center" parameterType="Service_CenterVO">
+ 	insert into service_center(SEQ,
+				CATEGORY_A,
+				CATEGORY_B,
+				CONTENT,
+				W_DATE,
+				CLICK,
+				S_FILE,
+				ID,
+				TITLE) values ((SELECT NVL(MAX(SEQ),0)+1 FROM service_center),
+				 				#{category_a},
+				 				#{category_b}, 
+				 				#{content},
+				 				SYSDATE,
+				 				'0',
+				 				'파일없음',
+				 				#{id},
+				 				#{title})
+ 	</insert>
+ 	<!--공지사항 글 수정  -->
+ <update id="updateService_Center" parameterType="Service_CenterVO">
+	UPDATE service_center 
+	<set>
+	title = #{title},
+	CATEGORY_B = #{category_b},
+	W_DATE = sysdate,
+	content = #{content}
+	</set>
+					where SEQ = #{seq}
+	</update>
+	<!--공지사항 글 삭제  -->
+	<delete id="deleteService_Center" parameterType="Service_CenterVO">
+	DELETE FROM SERVICE_CENTER 
+	WHERE SEQ=#{seq}
+	</delete>
+<!--고객센터 결제환불============================================================================  -->
+
+	<!--공지사항 페이징 처리(1) 페이지 갯수 체크  -->
+	<select id="listCountQna"  parameterType="SearchCriteria" resultType="int">
+		SELECT COUNT(SEQ) 
+		FROM service_center
+		WHERE  1=1 and CATEGORY_a='결제' 
+		<include refid="search"></include>
+		AND SEQ > 0	  
+	</select>
+	
+	<!--공지사항 페이징 처리(2) 페이지 처리 후 게시글 조회  -->
+	<select id="listQna" resultType="Service_CenterVO" parameterType="Service_CenterVO">
+		select 	SEQ, CATEGORY_A, CATEGORY_B, W_DATE, CLICK, CONTENT, S_FILE, ID, TITLE 
+		from (SELECT SEQ, CATEGORY_A, CATEGORY_B, W_DATE, CLICK, CONTENT, S_FILE, ID, TITLE, ROW_NUMBER()
+		OVER(ORDER BY SEQ DESC) AS RNUM FROM SERVICE_CENTER where 1=1 and CATEGORY_a='결제' 
+		<include refid="search"></include> ) SERVCIE_CENTER WHERE RNUM
+		BETWEEN #{rowStart} AND #{rowEnd} ORDER BY SEQ DESC
+	</select>
+	<!--공지사항 페이징 처리(2) 페이지 처리 후 게시글 조회  -->
+	<select id="listQnaPayment" resultType="Service_CenterVO" parameterType="Service_CenterVO">
+		select 	SEQ, CATEGORY_A, CATEGORY_B, W_DATE, CLICK, CONTENT, S_FILE, ID, TITLE 
+		from (SELECT SEQ, CATEGORY_A, CATEGORY_B, W_DATE, CLICK, CONTENT, S_FILE, ID, TITLE, ROW_NUMBER()
+		OVER(ORDER BY SEQ DESC) AS RNUM FROM SERVICE_CENTER where 1=1 and CATEGORY_b='결제' 
+		<include refid="search"></include> ) SERVCIE_CENTER WHERE RNUM
+		BETWEEN #{rowStart} AND #{rowEnd} ORDER BY SEQ DESC
+	</select>
+	<!--공지사항 페이징 처리(2) 페이지 처리 후 게시글 조회  -->
+	<select id="listQnaRefund" resultType="Service_CenterVO" parameterType="Service_CenterVO">
+		select 	SEQ, CATEGORY_A, CATEGORY_B, W_DATE, CLICK, CONTENT, S_FILE, ID, TITLE 
+		from (SELECT SEQ, CATEGORY_A, CATEGORY_B, W_DATE, CLICK, CONTENT, S_FILE, ID, TITLE, ROW_NUMBER()
+		OVER(ORDER BY SEQ DESC) AS RNUM FROM SERVICE_CENTER where 1=1 and CATEGORY_b='환불' 
+		<include refid="search"></include> ) SERVCIE_CENTER WHERE RNUM
+		BETWEEN #{rowStart} AND #{rowEnd} ORDER BY SEQ DESC
+	</select>
+	<!--공지사항 페이징 처리(2) 페이지 처리 후 게시글 조회  -->
+	<select id="listQnaRequest" resultType="Service_CenterVO" parameterType="Service_CenterVO">
+		select 	SEQ, CATEGORY_A, CATEGORY_B, W_DATE, CLICK, CONTENT, S_FILE, ID, TITLE 
+		from (SELECT SEQ, CATEGORY_A, CATEGORY_B, W_DATE, CLICK, CONTENT, S_FILE, ID, TITLE, ROW_NUMBER()
+		OVER(ORDER BY SEQ DESC) AS RNUM FROM SERVICE_CENTER where 1=1 and CATEGORY_b='신청' 
+		<include refid="search"></include> ) SERVCIE_CENTER WHERE RNUM
+		BETWEEN #{rowStart} AND #{rowEnd} ORDER BY SEQ DESC
+	</select>
+	<!--공지사항 페이징 처리(2) 페이지 처리 후 게시글 조회  -->
+	<select id="listQnaCancle" resultType="Service_CenterVO" parameterType="Service_CenterVO">
+		select 	SEQ, CATEGORY_A, CATEGORY_B, W_DATE, CLICK, CONTENT, S_FILE, ID, TITLE 
+		from (SELECT SEQ, CATEGORY_A, CATEGORY_B, W_DATE, CLICK, CONTENT, S_FILE, ID, TITLE, ROW_NUMBER()
+		OVER(ORDER BY SEQ DESC) AS RNUM FROM SERVICE_CENTER where 1=1 and CATEGORY_b='취소' 
+		<include refid="search"></include> ) SERVCIE_CENTER WHERE RNUM
+		BETWEEN #{rowStart} AND #{rowEnd} ORDER BY SEQ DESC
+	</select>	
+	<!--공지사항 페이징 처리(2) 페이지 처리 후 게시글 조회  -->
+	<select id="listQnaGita" resultType="Service_CenterVO" parameterType="Service_CenterVO">
+		select 	SEQ, CATEGORY_A, CATEGORY_B, W_DATE, CLICK, CONTENT, S_FILE, ID, TITLE 
+		from (SELECT SEQ, CATEGORY_A, CATEGORY_B, W_DATE, CLICK, CONTENT, S_FILE, ID, TITLE, ROW_NUMBER()
+		OVER(ORDER BY SEQ DESC) AS RNUM FROM SERVICE_CENTER where 1=1 and CATEGORY_b='기타' 
+		<include refid="search"></include> ) SERVCIE_CENTER WHERE RNUM
+		BETWEEN #{rowStart} AND #{rowEnd} ORDER BY SEQ DESC
+	</select>	
+	
+	<!--결제환불 단건 조회 -->
+		<select id="getService_CenterQna" resultType="Service_CenterVO"
+				parameterType="Service_CenterVO">
+	select seq, category_a, category_b, w_date,
+	click, content, s_file, id, title from service_center
+	 WHERE SEQ = #{seq}  and CATEGORY_a='결제' 
+	</select>	
+	<!--결제환불 이전글, 다음글-->
+	<select id="preNextQna" resultType="Service_CenterVO" parameterType="Service_CenterVO">
+	select seq, prev, prev_title,  next, next_title 
+			FROM (
+  					SELECT  SEQ, 
+    						LAG(SEQ,1) OVER(ORDER BY SEQ) PREV,
+						    LAG(TITLE,1) OVER(ORDER BY SEQ) PREV_TITLE,    
+						    LEAD(SEQ,1) OVER(ORDER BY SEQ) NEXT, 
+						    LEAD(TITLE,1) OVER(ORDER BY SEQ) NEXT_TITLE
+ 		FROM SERVICE_CENTER
+ 		where CATEGORY_a='결제' )
+ 		WHERE SEQ= #{seq}  
+ 	</select>
+ 	<!--결제환불 글 등록  -->
+	<insert id="insertService_CenterQna" parameterType="Service_CenterVO">
+ 	insert into service_center(SEQ,
+				CATEGORY_A,
+				CATEGORY_B,
+				CONTENT,
+				W_DATE,
+				CLICK,
+				S_FILE,
+				ID,
+				TITLE) values ((SELECT NVL(MAX(SEQ),0)+1 FROM service_center),
+				 				#{category_a},
+				 				#{category_b}, 
+				 				#{content},
+				 				SYSDATE,
+				 				'0',
+				 				'파일없음',
+				 				#{id},
+				 				#{title})
+ 	</insert>
+ 	<!--결제환불 글 수정  -->
+ 	<update id="updateService_CenterQna" parameterType="Service_CenterVO">
+	UPDATE service_center 
+	<set>
+	title = #{title},
+	content = #{content}
+	</set>
+					where SEQ = #{seq}
+	</update>
+	<!--고객센터 신청취소============================================================================  -->
+	
+	<!--결제환불 페이징 처리(1) 페이지 갯수 체크  -->
+	<select id="listCountQna2"  parameterType="SearchCriteria" resultType="int">
+		SELECT COUNT(SEQ) 
+		FROM service_center
+		WHERE  1=1 and CATEGORY_a='신청' 
+		<include refid="search"></include>
+		AND SEQ > 0	  
+	</select>
+	
+	<!--결제환불 페이징 처리(2) 페이지 처리 후 게시글 조회  -->
+	<select id="listQna2" resultType="Service_CenterVO" parameterType="Service_CenterVO">
+		select 	SEQ,
+						CATEGORY_A,
+						CATEGORY_B,
+						W_DATE,
+						CLICK,
+						CONTENT,
+						S_FILE,
+						ID,
+						TITLE from (
+            						SELECT 	SEQ,
+											CATEGORY_A,
+											CATEGORY_B,
+											W_DATE,
+											CLICK,
+											CONTENT,
+											S_FILE,
+											ID,
+											TITLE, ROW_NUMBER() OVER(ORDER BY SEQ DESC) AS RNUM
+											FROM SERVICE_CENTER
+																	
+											where 1=1 and CATEGORY_a='신청' 
+											<include refid="search"></include>
+											 ) SERVCIE_CENTER WHERE RNUM
+											BETWEEN #{rowStart} AND #{rowEnd}
+											ORDER BY SEQ DESC
+
+	</select>
+		<!--신청취소 단건 조회 -->
+		<select id="getService_CenterQna2" resultType="Service_CenterVO"
+				parameterType="Service_CenterVO">
+	select seq, category_a, category_b, w_date,
+	click, content, s_file, id, title from service_center
+	 WHERE SEQ = #{seq}  and CATEGORY_a='신청' 
+	</select>	
+	<!--신청취소 이전글, 다음글-->
+	<select id="preNextQna2" resultType="Service_CenterVO" parameterType="Service_CenterVO">
+	select seq, prev, prev_title,  next, next_title 
+			FROM (
+  					SELECT  SEQ, 
+    						LAG(SEQ,1) OVER(ORDER BY SEQ) PREV,
+						    LAG(TITLE,1) OVER(ORDER BY SEQ) PREV_TITLE,    
+						    LEAD(SEQ,1) OVER(ORDER BY SEQ) NEXT, 
+						    LEAD(TITLE,1) OVER(ORDER BY SEQ) NEXT_TITLE
+ 		FROM SERVICE_CENTER
+ 		where CATEGORY_a='신청' )
+ 		WHERE SEQ= #{seq}  
+ 	</select>
+	<!--신청취소 글 등록  -->
+	<insert id="insertService_CenterQna2" parameterType="Service_CenterVO">
+ 	insert into service_center(SEQ,
+				CATEGORY_A,
+				CATEGORY_B,
+				CONTENT,
+				W_DATE,
+				CLICK,
+				S_FILE,
+				ID,
+				TITLE) values ((SELECT NVL(MAX(SEQ),0)+1 FROM service_center),
+				 				#{category_a},
+				 				#{category_b}, 
+				 				#{content},
+				 				SYSDATE,
+				 				'0',
+				 				'파일없음',
+				 				#{id},
+				 				#{title})
+ 	</insert>
+ 	<!--신청취소 글 수정  -->
+ 	<update id="updateService_CenterQna2" parameterType="Service_CenterVO">
+	UPDATE service_center 
+	<set>
+	title = #{title},
+	content = #{content}
+	</set>
+					where SEQ = #{seq}
+	</update>
+
+ </mapper>
+ 

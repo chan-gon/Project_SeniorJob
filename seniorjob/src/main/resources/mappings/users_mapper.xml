@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="com.company.users.service.impl.UsersMapper">
+	<!-- 전체 조회 -->
+	<select id="getUsersList" resultType="com.company.users.service.UsersVO">
+	SELECT     ID
+			  ,PASSWORD
+			  ,ADDRESS
+			  ,PHONENUM
+			  ,EMAIL
+			  ,BIRTH
+			  ,AUTH
+			  ,NAME
+			  ,LOG_DATE
+	FROM USERS
+	</select>
+	<!-- 단건 조회 -->
+	<select id ="getUsers" resultType="com.company.users.service.UsersVO" parameterType="com.company.users.service.UsersVO">
+	SELECT     ID
+			  ,PASSWORD
+			  ,ADDRESS
+			  ,PHONENUM
+			  ,EMAIL
+			  ,BIRTH
+			  ,AUTH
+			  ,NAME
+			  ,LOG_DATE
+			  ,POSTCODE
+			  ,DETAILADDRESS
+			  ,EXTRAADDRESS
+			  FROM USERS
+	WHERE ID = #{id}		  
+	</select>
+
+	
+	<!-- login -->
+	<!-- 김찬곤 PHONENUM, EMAIL 추가(210413) -->
+	<select id ="logCheck" resultType="com.company.users.service.UsersVO" parameterType ="com.company.users.service.UsersVO">
+		SELECT ID,
+			   PASSWORD,
+			   NAME,
+			   PHONENUM,
+			   EMAIL,
+			   AUTH	
+		FROM USERS
+		WHERE ID = #{id}    
+	</select>
+	
+	<!-- kakao session login -->
+	<select id ="kakaoCheck" resultType="com.company.users.service.UsersVO" parameterType ="com.company.users.service.UsersVO">
+		SELECT ID
+		FROM USERS
+		WHERE ID = #{id}    
+	</select>
+	
+	<!-- 아이디 중복체크 -->
+	<select id="idCheck" resultType="int">
+	SELECT COUNT(*) FROM USERS
+	WHERE ID = #{id}
+	</select>
+	
+	<!-- 아이디 찾기(전화번호, 이메일로 비교) -->
+	<select id="findId" resultType="String">
+	SELECT ID 
+	FROM USERS 
+	<if test="name != null">WHERE NAME = #{name}</if>
+	<if test="email != null">AND EMAIL = #{email}</if>
+	</select> 
+	
+	<!-- 패스워드 체크 -->
+	<select id ="passCheck" resultType="int">
+	SELECT COUNT(*) FROM USERS
+	WHERE ID = #{id}
+	AND PASSWORD = #{password}
+	</select>
+	
+	<!-- email 중복체크 -->
+	<select id="emailCheck" resultType="int">
+	SELECT COUNT(*) FROM USERS
+	WHERE EMAIL = #{email}
+	</select>
+	
+	<!-- 회원가입 -->
+	<insert id="insertUsers" parameterType="com.company.users.service.UsersVO">
+	INSERT INTO USERS(<if test="id != null and id !=''">ID</if>
+					<if test="password != null and password !=''">,PASSWORD</if>
+					<if test="address != null and address !=''">,ADDRESS</if>
+					<if test="phonenum != null and phonenum !=''">,PHONENUM</if>
+					<if test="email != null and email !=''">,EMAIL</if>
+					<if test="birth != null and birth !=''">,BIRTH</if>
+					<if test="name != null and name !=''">,NAME</if>
+					<if test="distinction != null and distinction !=''">,Distinction</if>)
+	VALUES(			<if test="id != null and id !=''">#{id}</if>
+					<if test="password != null and password !=''">,#{password}</if>
+					<if test="address != null and address !=''">,#{address}</if>
+					<if test="phonenum != null and phonenum !=''">,#{phonenum}</if>
+					<if test="email != null and email !=''">,#{email}</if>
+					<if test="birth != null and birth !=''">,#{birth}</if>
+					<if test="name != null and name !=''">,#{name}</if>
+					<if test="distinction != null and distinction !=''">,#{distinction}</if>)
+	</insert>
+	
+	<!-- 패스워드 변경 -->
+	<update id="updateInfo" parameterType="com.company.users.service.UsersVO">
+		UPDATE USERS SET PASSWORD = #{password} 
+						 WHERE ID = #{id}
+	</update>
+	
+	<!-- 양소민 수정 -->
+	<!-- 회원정보 업데이트 -->
+	<update id="updateUsersProc" parameterType="com.company.users.service.UsersVO">
+		UPDATE USERS SET <if test="postcode != null and postcode !=''">POSTCODE=#{postcode},</if>
+					     <if test="address != null and address !=''">ADDRESS= #{address},</if>
+					     <if test="extraaddress != null and extraaddress !=	''">EXTRAADDRESS=#{extraaddress},</if>	
+					     <if test="detailaddress != null and detailaddress != ''">DETAILADDRESS=#{detailaddress},</if>
+						 <if test="phonenum !=null and phonenum !=''">PHONENUM= #{phonenum},</if>
+						 <if test="email !=null and email !=''">EMAIL= #{email},</if>
+						 <if test="birth !=null and birth !=''">BIRTH= #{birth},</if>
+						 <if test="name !=null and name !=''">NAME= #{name}</if>	
+						 WHERE ID = #{id}
+	</update>
+
+	
+	<!-- 양소민 추가 -->
+	<!-- 마이페이지에서 자격증/경력인증서 등록 -->
+	<insert id="insertCerti" parameterType="UsersVO">
+	INSERT INTO USERCERTI(ID,
+							NO
+							<if test="certi_name != null and certi_name !=''">,CERTI_NAME</if>
+							<if test="certi_place != null and certi_place !=''">,CERTI_PLACE</if>
+							<if test="certi_no != null and certi_no !=''">,CERTI_NO</if>
+							<if test="certi_date != null and certi_date !=''">,CERTI_DATE</if>
+							<if test="carrer_certi != null and carrer_certi !=''">,CARRER_CERTI</if>
+							)
+				VALUES( 
+							#{id},
+							USERCERTI_SEQ.NEXTVAL
+							<if test="certi_name != null and certi_name !=''">,#{certi_name}</if>
+							<if test="certi_place != null and certi_place !=''">,#{certi_place}</if>
+							<if test="certi_no != null and certi_no !=''">,#{certi_no}</if>
+							<if test="certi_date != null and certi_date !=''">,#{certi_date}</if>
+							<if test="carrer_certi != null and carrer_certi !=''">,#{carrer_certi}</if>
+							
+						)
+				
+	</insert>
+	
+	<!-- 마이페이지에서 자격증 조회 -->
+	<select id="getCertiList" resultType="map">
+	SELECT NO,
+			CERTI_NAME,
+			CERTI_PLACE,
+			CERTI_NO,
+			CERTI_DATE
+			 <!-- TO_CHAR(CERTI_DATE,'YYYY-MM-DD') AS "certi_date"  -->
+	FROM USERCERTI
+	WHERE ID=#{id}
+	AND CERTI_NAME IS NOT NULL 
+	</select>
+
+	<!-- 마이페이지에서 경력인증서 조회 -->
+	<select id="getCarList" resultType="map">
+	SELECT NO,
+			CARRER_CERTI 
+	FROM USERCERTI
+	WHERE ID=#{id}
+	AND CARRER_CERTI IS NOT NULL 
+	</select>
+
+	 <!-- 자격증 수정 -->
+	<update id="updateCerti" parameterType="UsersVO">
+		UPDATE USERCERTI SET CERTI_NAME=#{certi_name},
+			CERTI_PLACE=#{certi_place},
+			CERTI_NO=#{certi_no},
+			CERTI_DATE=#{certi_date} 
+		WHERE NO = #{no}
+	</update>
+	 
+	 
+
+	<!-- 마이페이지에서 경력인증서 삭제 -->
+	<delete id="delCareer" parameterType="UsersVO">
+	DELETE FROM USERCERTI 
+	WHERE NO=#{no} 
+	</delete>
+	
+	<!-- 마이페이지에서 경력인증서 파일 이름 가져오기 -->
+	<select id="selCareer" resultType="UsersVO">
+	SELECT CARRER_CERTI 
+	FROM USERCERTI 
+	WHERE NO=#{no}
+	</select>
+	
+	<!-- 마이페이지 자격증 단건 조회 -->
+	<select id="getCerti" resultType="UsersVO">
+	SELECT NO,
+			CERTI_NAME,
+			CERTI_PLACE,
+			CERTI_NO,
+			CERTI_DATE
+	FROM USERCERTI
+	WHERE NO=#{no}
+	</select> 
+	<!-- 김찬곤 / 단건 조회 -->
+	<select id ="getUsersForPayment" resultType="com.company.users.service.UsersVO" parameterType="map">
+	SELECT     ID
+			  ,PASSWORD
+			  ,ADDRESS
+			  ,PHONENUM
+			  ,EMAIL
+			  ,BIRTH
+			  ,AUTH
+			  ,NAME
+			  ,LOG_DATE
+			  FROM USERS
+	WHERE ID = #{id}		  
+	</select>
+	
+	</mapper>

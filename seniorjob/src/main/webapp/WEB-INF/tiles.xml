@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration
+2.1//EN"
+"http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
+<!-- header, menu, footer -->
+<tiles-definitions>
+	<!-- tiles 적용 -->
+	<definition name="mainTemplate" template="/WEB-INF/views/manager/tiles/layout.jsp">
+		<put-attribute name="sidebar" value="/WEB-INF/views/manager/tiles/sidebar.jsp"/>
+		<put-attribute name="content" value=""/>
+	</definition>
+	
+	<definition name="/manager/*" extends="mainTemplate">
+		<put-attribute name="content" value="/WEB-INF/views/manager/{1}.jsp" />
+	</definition>
+	
+	 <!-- 타일즈 미 적용 -->
+	<definition name="normalLayout" template="/WEB-INF/views/home.jsp">
+		<put-attribute name="normalLayout" value="" />
+	</definition>
+	
+	<definition name="users/*" extends="normalLayout">
+		<put-attribute name="normalLayout" value="/WEB-INF/views/{1}.jsp" />
+	</definition>
+		
+
+</tiles-definitions>

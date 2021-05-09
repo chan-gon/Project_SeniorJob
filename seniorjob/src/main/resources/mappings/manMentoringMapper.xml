@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.company.manager.mentoring.service.impl.manMentoringMapper">
+<!-- 멘토링 페이징 처리(1) 페이지 갯수 체크  -->
+	<select id="mentoringCount"  parameterType="ManSearchCriteria" resultType="int">
+		SELECT COUNT(mentoring_number) 
+		FROM MENTORING
+		WHERE 1=1  
+		<include refid="search"></include>
+		 
+	</select>
+	
+<!-- 멘토링 검색 -->
+	<sql id="search">
+		<if test="searchType != null">
+				<if test="searchType == 'mentoring_number'.toString()">AND MENTORING_NUMBER LIKE '%' || #{keyword} || '%'</if>
+				<if test="searchType == 'mentoring_name'.toString()">AND MENTORING_NAME LIKE '%' || #{keyword} || '%'</if>
+		</if>
+	</sql>
+	
+<!-- 멘토링 페이징 처리(2) 페이지 처리 후 게시글 조회(전체조회)  -->
+<select id="mentoringList" resultType="com.company.manager.mentoring.manMentoringVO" parameterType="com.company.manager.mentoring.manMentoringVO">
+	SELECT *
+	FROM (SELECT MENTORING_NUMBER, MENTORING_NAME, MENTORING_KIND, MENTORING_BEGIN_DATE, MENTORING_END_DATE,
+	ROW_NUMBER() OVER(ORDER BY MENTORING_NUMBER DESC) AS RNUM
+	FROM MENTORING where 1=1 <include refid="search"></include>)
+	MENTORING WHERE RNUM BETWEEN #{rowStart} AND #{rowEnd} 
+	ORDER BY MENTORING_NUMBER ASC
+</select>	
+
+<!-- 멘토링 단건조회 -->
+
+<select id="getManMentoringList" parameterType="com.company.manager.mentoring.manMentoringVO" resultType="com.company.manager.mentoring.manMentoringVO">
+ 	SELECT * FROM MENTORING
+ 	WHERE MENTORING_NUMBER = #{mentoring_number} 
+ </select>
+ 
+<!-- 멘토링 삭제 -->
+
+ <delete id="deleteManMentoring" parameterType="com.company.manager.mentoring.manMentoringVO">
+ 	DELETE FROM MENTORING
+ 	WHERE MENTORING_NUMBER = #{mentoring_number}
+ </delete>
+</mapper>

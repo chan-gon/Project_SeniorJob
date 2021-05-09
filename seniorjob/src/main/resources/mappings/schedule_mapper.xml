@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.company.schedule.service.impl.ScheduleMapper">
+
+	<!-- 일정 조회, 마이페이지 홈에있는 calendar에서 확인 가능 -->
+	<select id="getSearchSchedule" parameterType="ScheduleVO" resultType="map">
+		SELECT SCHEDULE_NAME AS "title",
+  				TO_CHAR(schedule_start,'yyyy-mm-dd')||'T'||schedule_end_TIME AS "start",
+ 				TO_CHAR(schedule_end,'yyyy-mm-dd')||'T'||schedule_start_TIME AS "end"
+		FROM SCHEDULE 
+		WHERE
+			(MENTORID=#{mentorid} or
+			MENTEEID=#{menteeid}) 
+		AND 
+		STATE='accept'
+	</select>
+	
+	<!-- 멘토가 보낸 요청이 멘티의 마이페이지 홈에서 보임. -->
+	<select id="getSearchRequest" resultType="map">
+		SELECT *
+		FROM SCHEDULE 
+		WHERE 
+		MENTEEID=#{menteeid} 
+		AND 
+		STATE='request'
+	</select>
+	
+	<!-- 멘토링 요청 보내기. 내가 만든 멘토링에서 멘토링 요청 버튼을 누르면 작동  -->
+	<insert id="insertSchedule" parameterType="ScheduleVO">
+		INSERT INTO SCHEDULE(SEQ,
+							SCHEDULE_NAME,
+							SCHEDULE_CON,
+							SCHEDULE_START,
+							SCHEDULE_END,
+							STATE,
+							MENTEEID,
+							MENTORID,
+							SCHEDULE_START_TIME,
+							SCHEDULE_END_TIME) 
+					VALUES(SCHEDULE_SEQ.NEXTVAL,
+							#{schedule_name},
+							#{schedule_con},
+							TO_DATE(#{schedule_start},'yyyy-MM-dd'),
+							TO_DATE(#{schedule_end},'yyyy-MM-dd'),
+							'request',
+							#{menteeid},
+							#{mentorid},
+							#{schedule_start_time},
+							#{schedule_end_time}
+							)
+					
+	</insert>
+	
+	<!-- 멘티가 요청 승낙할 시 캘린더에 등록됨.-->
+	<update id="updateSchedule" parameterType="ScheduleVO">
+		UPDATE SCHEDULE 
+		SET 
+		STATE='accept',
+		RESUME_NO=#{resume_no} 
+		WHERE 
+		SEQ=#{seq}
+	</update>
+	
+	<!-- 멘티가 요청 거절할 시  -->
+	<update id="updateScheduleReject" parameterType="ScheduleVO">
+		UPDATE SCHEDULE 
+		SET 
+		STATE='reject' 
+		WHERE 
+		SEQ=#{seq}
+	</update>
+
+
+	<!-- 멘토에게 질문하기 -->
+	<insert id="insertQuest" parameterType="ScheduleVO">
+		INSERT INTO SCHEDULE(SEQ,
+							MENTORID,
+							SCHEDULE_NAME,
+							SCHEDULE_CON,
+							MENTEEID,
+							STATE,
+							SCHEDULE_START) 
+					VALUES(SCHEDULE_SEQ.NEXTVAL,
+							#{mentorid},
+							#{schedule_name},
+							#{schedule_con},
+							#{menteeid},
+							'quest',
+							sysdate
+							)
+					
+	</insert>
+	
+	<!-- 멘토의 마이페이지 홈에서 질문목록 확인 -->
+	<select id="getSearchQuest" resultType="map">
+		SELECT *
+		FROM SCHEDULE 
+		WHERE 
+		MENTORID=#{mentorid} 
+		AND 
+		STATE='quest'
+	</select>
+	
+		<!-- 멘토가 답변.-->
+	<update id="updateQuest" parameterType="ScheduleVO">
+		UPDATE SCHEDULE 
+		SET REPLY=#{reply},
+			STATE='REPLY', 
+			SCHEDULE_END=SYSDATE 
+		WHERE SEQ=#{seq}
+	</update>
+	
+	<!-- 질문 내용 단건조회 -->
+	<select id="getQuest" resultType="ScheduleVO">
+		SELECT *
+		FROM SCHEDULE 
+		WHERE 
+		SEQ=#{seq}
+	</select>
+	
+	<!-- 답변 내용 목록조회 -->
+	<select id="replyQuestFormSom" resultType="ScheduleVO">
+	SELECT * 
+	FROM SCHEDULE 
+	WHERE STATE='REPLY' 
+	AND MENTEEID=#{menteeid}
+	</select>
+	
+	<!-- 답변 목록 count -->
+	<select id="replyQuestBadge" resultType="String">
+	SELECT COUNT(*) 
+	FROM SCHEDULE 
+	WHERE STATE='REPLY' 
+	AND MENTEEID=#{menteeid}
+	</select>
+	
+	<select id="getSearchMentoringDate" parameterType="ScheduleVO" resultType="map">
+		SELECT TO_CHAR(SCHEDULE_START,'YYYYMMDD')||REPLACE(SCHEDULE_START_TIME,':','')||'00' AS "SCHEDULE_START",
+  				TO_CHAR(SCHEDULE_END,'YYYYMMDD')||REPLACE(SCHEDULE_END_TIME,':','')||'59' AS "SCHEDULE_END",
+  				RESUME_NO AS "RESUME_NO"
+  		FROM SCHEDULE 
+  		WHERE
+			(MENTORID=#{mentorid} OR
+			MENTEEID=#{menteeid}) 
+		AND 
+		STATE='accept'
+		AND RESUME_NO IS NOT NULL
+	</select>
+	
+	
+	<!-- 이력서 수정되면 스케줄에 있는 이력서 번호도 같이 수정 -->
+	<update id="renameResumeNo" parameterType="ScheduleVO">
+	UPDATE SCHEDULE 
+	SET RESUME_NO=#{resume_no} 
+	WHERE RESUME_NO=#{oldResumeNo}
+	</update>
+	
+</mapper>

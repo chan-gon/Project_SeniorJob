@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="com.company.resume.service.impl.ResumeMapper">
+	<select id="getSearchResumeList" resultType="com.company.resume.service.ResumeVO">
+		SELECT   RESUME_NO, 
+				 RESUME_NAME, 
+				 RESUME_BIRTH, 
+				 RESUME_EMAIL, 
+				 RESUME_PHONE, 
+				 RESUME_ADDRESS, 
+				 RESUME_SCHOOL, 
+				 RESUME_AREA, 
+				 RESUME_START, 
+				 RESUME_END, 
+				 ID, 
+				 IMAGE,
+				 RESUME_TITLE,
+				 RESUME_MAJOR
+		FROM 	 RESUME
+		ORDER BY RESUME_NO
+	</select>
+	
+	
+	<!-- 이력서 개인 목록 조회 -->
+	<select id="getSearchResumeListSom" resultType="ResumeVO">
+		SELECT   RESUME_NO, 
+				 RESUME_NAME, 
+				 RESUME_BIRTH, 
+				 RESUME_EMAIL, 
+				 RESUME_PHONE, 
+				 RESUME_ADDRESS, 
+				 RESUME_SCHOOL, 
+				 RESUME_AREA, 
+				 RESUME_START, 
+				 RESUME_END, 
+				 ID, 
+				 IMAGE,
+				 RESUME_TITLE,
+				 RESUME_MAJOR
+		FROM 	 RESUME
+		WHERE ID=#{id}
+		ORDER BY RESUME_NO
+	</select>
+	
+	<insert id="insertResume" parameterType="ResumeVO">
+	<selectKey keyProperty="resume_no" resultType="string" order="BEFORE">
+		SELECT NVL(MAX(RESUME_NO), 0) + 1 FROM RESUME
+ 	</selectKey>
+		INSERT INTO RESUME (RESUME_NO, 
+							RESUME_NAME, 
+							RESUME_BIRTH,
+							RESUME_EMAIL, 
+							RESUME_PHONE, 
+							RESUME_ADDRESS, 
+							RESUME_SCHOOL, 
+							RESUME_AREA, 
+							RESUME_START, 
+							RESUME_END,
+							RESUME_TITLE,
+							ID,
+							RESUME_MAJOR
+							<if test="image != null and image !=''">
+							,IMAGE
+							</if>
+							)
+		VALUES				(#{resume_no},
+							 #{resume_name}, 
+							 #{resume_birth}, 
+							 #{resume_email}, 
+							 #{resume_phone}, 
+							 #{resume_address}, 
+							 #{resume_school}, 
+							 #{resume_area}, 
+							 TO_DATE(#{resume_start}, 'yyyy-MM-dd'), 
+							 TO_DATE(#{resume_end}, 'yyyy-MM-dd'), 
+							 #{resume_title},
+							 #{id},
+							 #{resume_major}
+							 <if test="image != null and image !=''">
+							 ,#{image}
+							 </if>
+							 )
+	</insert>
+	<update id="updateResuem">
+		UPDATE RESUME SET RESUME_NAME=#{resume_name}, 
+						  RESUME_BIRTH=#{resume_birth}, 
+						  RESUME_EMAIL=#{resume_email},
+						  RESUME_PHONE=#{resume_phone}, 
+						  RESUME_ADDRESS=#{resume_address}, 
+						  RESUME_SCHOOL=#{resume_school}, 
+						  RESUME_AREA=#{resume_area}, 
+						  RESUME_START=TO_DATE(#{resume_start}, 'yyyy-MM-dd'), 
+						  RESUME_END=TO_DATE(#{resume_end}, 'yyyy-MM-dd'),
+						  IMAGE = #{image},
+						  RESUME_TITLE=#{resume_title},
+						  RESUME_MAJOR=#{resume_major}
+		WHERE 			  RESUME_NO=#{resume_no}
+	</update>
+	<delete id="deleteResume">
+		DELETE FROM RESUME 
+		WHERE RESUME_NO = #{resume_no}
+	</delete>
+	<select id="getResume" resultType="com.company.resume.service.ResumeVO">
+		SELECT  RESUME_NO, 
+				RESUME_NAME, 
+				RESUME_BIRTH, 
+				RESUME_EMAIL, 
+				RESUME_PHONE, 
+				RESUME_ADDRESS, 
+				RESUME_SCHOOL, 
+				RESUME_AREA, 
+				RESUME_START, 
+				RESUME_END, 
+				ID,
+				COLLECTION, 
+				IMAGE,
+				RESUME_TITLE,
+				RESUME_MAJOR
+		FROM 	RESUME
+		WHERE   RESUME_NO = #{resume_no}
+	</select>
+	
+	<update id="ckReUpdateSom" parameterType="ResumeVO">
+	UPDATE RESUME
+	SET MENTORID=#{mentorId}
+	WHERE RESUME_NO=#{resume_no}
+	</update>
+	
+	<!-- 멘토가 첨삭요청 들어온 목록 조회 -->
+	<select id="checkR"  resultType="ResumeVO">
+	SELECT * 
+	FROM RESUME
+	WHERE MENTORID=#{mentorId}
+	</select>
+	
+	<!-- 첨삭등록 -->
+	<update id="colReUpdate" parameterType="ResumeVO">
+	UPDATE RESUME
+	<set>
+	COLLECTION=#{collection}
+	</set>
+	WHERE RESUME_NO=#{resume_no}
+	</update>
+ </mapper>

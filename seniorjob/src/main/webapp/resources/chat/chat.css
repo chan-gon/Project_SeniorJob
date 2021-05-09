@@ -1,0 +1,36 @@
+       #realM {
+            width: 400px;
+            height: 600px;
+            border: 1px solid black;
+            background: ivory;
+        }
+        #messages {
+            height: 90%;
+            overflow-y: scroll;
+        }
+        #chatForm {
+            height: 20%;
+            border-top: 1px solid black;
+            text-align: center;
+        }
+        #cc {
+            width: 80%;
+            height: 32px;
+            border-radius: 8px;
+        }
+        #messageid {
+            width: 16%;
+            height: 34px;
+            border-radius: 50px;
+            background: black;
+            color: white;
+        }
+       
+	    button {
+		    background: papayawhip;
+		    cursor: pointer;
+		    box-sizing: border-box;
+		    border: 2px solid #34495e;
+		    position: relative;
+		    overflow: hidden;
+		}

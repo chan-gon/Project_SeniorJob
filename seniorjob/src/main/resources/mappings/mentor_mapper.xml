@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="com.company.mentor.service.impl.MentorMapper">
+ 
+ <!-- 김찬곤 ============================================================================  -->
+ 
+ 	<!-- 전체검색 / 지역 검색 / 직무 검색_김찬곤  --> 
+	<select id="getMentorList" resultType="com.company.mentor.service.MentorVO">
+		SELECT M.*, U.AUTH "usersVO.auth", U.NAME "usersVO.name"
+		FROM 
+			MENTOR M, USERS U
+		WHERE 
+			M.ID = U.ID
+		AND 
+			U.AUTH = 'MENTOR' 
+		ORDER BY MENTOR_ID
+	</select>
+	
+	<!-- 키워드 검색_김찬곤 -->
+	<select id="getKeywordSearch" resultType="com.company.mentor.service.MentorVO">
+		SELECT M.*, U.AUTH "usersVO.auth", U.NAME "usersVO.name"
+		FROM 
+			MENTOR M, USERS U
+		WHERE 
+			M.ID = U.ID
+		AND 
+			U.AUTH = 'MENTOR' 
+			
+		AND ( 
+			 MENTORING_LOCATION LIKE '%'||#{searchKeyword}||'%' 
+			 OR MENTORING_AGE LIKE '%'||#{searchKeyword}||'%' 
+			 OR MENTOR_DUTY LIKE '%'||#{searchKeyword}||'%' 
+			 )
+			
+		ORDER BY 
+			MENTOR_ID
+	</select>
+		
+	<!-- 체크박스 검색_김찬곤 -->	
+	<select id="getSearchMentorDuty" resultType="com.company.mentor.service.MentorVO">
+	SELECT M.*, U.AUTH "usersVO.auth", U.NAME "usersVO.name"
+	FROM 
+		MENTOR M, USERS U
+	WHERE 
+		M.ID = U.ID
+	AND 
+		U.AUTH = 'MENTOR'
+	AND 
+		MENTOR_DUTY IN
+		<foreach collection="mentor_dutyArr" item="item" index="index" separator="," open="(" close=")">
+			#{item}				
+		</foreach>								
+	</select>
+	
+	<!-- 멘토 등록_김찬곤 -->
+	<insert id="MentorRegisterProc" parameterType="com.company.mentor.service.MentorVO">
+		INSERT INTO MENTOR
+		(
+			MENTOR_ID,
+			MENTORING_KIND,
+			MENTOR_INTRODUCE,
+			MENTOR_CAREER,
+			MENTOR_PHOTO,
+			MENTOR_SCHOOL_NAME,
+			MENTOR_COMPANY_NAME,
+			MENTOR_DEPARTMENT_NAME,
+			MENTOR_JOB_ID,
+			MENTOR_DUTY,
+			ID,
+			MENTORING_AGE,
+			MENTORING_LOCATION,
+			MENTOR_DATE
+		)
+		VALUES(
+			SEQ_MENTOR.NEXTVAL,
+			#{mentoring_kind},
+			#{mentor_introduce},
+			#{mentor_career},
+			#{mentor_photo},
+			#{mentor_school_name},
+			#{mentor_company_name},
+			#{mentor_department_name},
+			#{mentor_job_id},
+			#{mentor_duty},
+			#{id},
+			#{mentoring_age},
+			#{mentoring_location},
+			sysdate
+		)
+	</insert>
+	
+	<!-- 멘토 등록 중복 체크_김찬곤 -->
+	<select id="mentorRegisterCheck" resultType="com.company.mentor.service.MentorVO" parameterType="com.company.mentor.service.MentorVO">
+		SELECT * FROM MENTOR
+		WHERE ID = #{id}
+	</select>
+	
+	<!-- 멘토 상세페이지_김찬곤 -->
+	<select id="getMentor" resultType="com.company.mentor.service.MentorVO" parameterType="com.company.mentor.service.MentorVO">
+	SELECT U.name "usersVO.name", M.*
+	FROM 
+		USERS U, MENTOR M
+	WHERE 
+		U.ID = M.ID
+	AND 
+		M.MENTOR_ID = #{mentor_id}
+	</select>
+	
+	<!-- 세부검색: 최신순(멘토등록일자 기준)_김찬곤 -->
+	<select id="getMentorByDate" resultType="com.company.mentor.service.MentorVO">
+   		SELECT M.*, U.AUTH "usersVO.auth", U.NAME "usersVO.name"
+		FROM 
+			MENTOR M, USERS U
+		WHERE 
+			M.ID = U.ID
+		AND 
+			U.AUTH = 'MENTOR'
+		ORDER BY 
+			MENTOR_DATE
+	</select>
+	
+	<!-- 세부검색: 인기순(팔로우숫자 기준)_김찬곤 -->
+	<select id="getMentorByFollow" resultType="com.company.mentor.service.MentorVO">
+		SELECT M.*, U.AUTH "usersVO.auth", U.NAME "usersVO.name"
+		FROM 
+			MENTOR M, USERS U
+		WHERE 
+			M.ID = U.ID
+		AND 
+			U.AUTH = 'MENTOR'
+		ORDER BY 
+			M.MENTOR_F_NUM
+	</select>
+	
+	<!-- 멘토 팔로우 클릭 시 멘토 팔로우 숫자 추가_김찬곤 -->
+	<update id="getUpdateFNumPlus">
+		UPDATE MENTOR
+		SET 
+			MENTOR_F_NUM = MENTOR_F_NUM+1
+		WHERE 
+			MENTOR_ID = #{mentor_id}
+	</update>	
+	
+	<!-- 멘토 팔로우 클릭 시 멘토 팔로우 숫자 제거_김찬곤 -->
+	<update id="getUpdateFNumMinus">
+		UPDATE MENTOR
+		SET 
+			MENTOR_F_NUM = MENTOR_F_NUM-1
+		WHERE 
+			MENTOR_ID = #{mentor_id}
+	</update>
+	
+	<!--페이징 처리(1) 레코드 건수_김찬곤  -->
+	<!-- <select id="getCountMentor" resultType="int">
+		SELECT COUNT(*) FROM MENTOR
+	</select> -->
+	
+<!-- 사용하지 않는 쿼리  -->	
+	<!--페이징 처리(2) 페이지 처리 후 지정된 범위의 멘토 조회_김찬곤  -->
+	<!-- <select id="getSearchMentor" resultType="com.company.mentor.service.MentorVO">
+		SELECT * FROM(
+			SELECT ROWNUM RN, A.* FROM(
+				SELECT * FROM MENTOR
+				ORDER BY MENTOR_ID
+				) A
+			)
+		WHERE RN BETWEEN #{start} AND #{end}
+	</select> -->
+<!-- End of 사용하지 않는 쿼리  -->	
+	
+<!-- End of 김찬곤 ============================================================================  -->	
+	
+	<!-- 양소민 추가 -->
+	<!-- 멘토 아이디 조회 -->
+	<select id="getMentorId" resultType="string">
+	SELECT MENTOR_ID
+ 	FROM MENTOR
+ 	WHERE ID=#{id}
+	</select>
+	
+	<!-- 질문 답변시 멘토 이름 조회 -->
+	<select id="getMentorName" parameterType="String" resultType="string">
+	SELECT U.NAME 
+	FROM USERS U 
+	JOIN MENTOR M 
+	ON U.ID = M.ID 
+	WHERE MENTOR_ID=#{menId}
+	</select>
+	
+<!-- 정병기 -->	
+<!-- 멘토 상태 승급 -->	
+<update id="authMento"	parameterType="com.company.mentor.service.MentorVO">
+	UPDATE MENTOR SET MENTOR_CONFIRM_STATUS ='승인완료'
+	WHERE ID = #{id}
+</update>
+
+<!-- 멘토 상태 강등 -->
+<update id="authDownMento" parameterType="com.company.mentor.service.MentorVO">
+	UPDATE MENTOR SET MENTOR_CONFIRM_STATUS ='승인해제'
+	WHERE ID = #{id}
+</update>
+		
+ </mapper>	

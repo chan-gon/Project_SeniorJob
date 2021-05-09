@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="com.company.manager.user.service.impl.manUserMapper">
+ <!-- 회원 전체 조회 -->
+<!-- <select id="userList" parameterType="com.company.manager.user.userVO" resultType="com.company.manager.user.userVO"> 
+ 	SELECT USERS.*, MENTOR.MENTOR_CAREER_CERTIFICATE
+	FROM USERS LEFT OUTER JOIN MENTOR
+	ON USERS.ID = MENTOR.ID
+ </select> -->
+ <!--회원 페이징 처리(1) 페이지 갯수 체크  -->
+	<select id="userCount"  parameterType="ManSearchCriteria" resultType="int">
+		SELECT COUNT(ID) 
+		FROM V_USERS
+		WHERE 1=1  
+		<include refid="search"></include>
+		 
+	</select>
+	
+<!--회원 검색 -->
+	<sql id="search">
+		<if test="searchType != null">
+				<if test="searchType == 'name'.toString()">AND LOWER(NAME) LIKE LOWER('%' || #{keyword} || '%')</if>
+				<if test="searchType == 'id'.toString()">AND LOWER(ID) LIKE LOWER('%' || #{keyword} || '%')</if>
+				<if test="searchType == 'auth'.toString()">AND LOWER(AUTH) LIKE LOWER('%' || #{keyword} || '%')</if>
+				<if test="searchType == 'mentor_confirm_status'.toString()">AND MENTOR_CONFIRM_STATUS LIKE ('%' || #{keyword} || '%')</if>
+		</if>
+	</sql>
+	
+<!--회원 페이징 처리(2) 페이지 처리 후 게시글 조회(전체조회)  -->
+<select id="userList" resultType="com.company.manager.user.userVO" parameterType="com.company.manager.user.userVO">
+	SELECT *
+	FROM (SELECT id, address, phonenum, email, birth, auth, name, log_date,
+	mentor_career_certificate,  distinction, mentor_date, mentor_confirm_status,
+	ROW_NUMBER() OVER(ORDER BY id DESC) AS RNUM
+	FROM V_USERS where 1=1 <include refid="search"></include>)
+	V_USERS WHERE RNUM BETWEEN #{rowStart} AND #{rowEnd} 
+	
+	ORDER BY ID DESC
+</select>	
+  
+ <!-- 회원 단건 조회 -->
+ <select id="getUserList" parameterType="com.company.manager.user.userVO" resultType="com.company.manager.user.userVO">
+ 	SELECT USERS.*, M.MENTOR_CAREER_CERTIFICATE, M.MENTOR_DATE, M.MENTOR_CONFIRM_STATUS
+	FROM USERS LEFT OUTER JOIN MENTOR M
+	ON USERS.ID = M.ID
+	WHERE USERS.ID = #{id}
+ </select>
+ 
+ <!-- 회원 수정 -->
+ <update id="updateUserProc" parameterType="com.company.manager.user.userVO">
+ 	UPDATE USERS SET
+ 					NAME = #{name},
+ 					EMAIL = #{email},
+ 					PHONENUM = #{phonenum}
+ 					<!--ADDRESS = #{address}-->
+ 	WHERE ID = #{id}
+ </update>
+ 
+ <!-- 회원 삭제 -->
+ <delete id="deleteUser" parameterType="com.company.manager.user.userVO">
+ 	DELETE FROM USERS 
+ 	WHERE ID = #{id}
+ </delete>
+ 
+ <!-- 회원 승급 -->
+ <update id="authUser" parameterType="com.company.manager.user.userVO">
+ 	UPDATE USERS SET AUTH = 'MENTOR' 
+ 	WHERE ID = #{id}
+ </update>
+ 
+ <!-- 회원 강등 -->
+ <update id="authDownUser" parameterType="com.company.manager.user.userVO">
+ 	UPDATE USERS SET AUTH = 'USER' 
+ 	WHERE ID = #{id}
+ </update>
+ 
+ <!-- mentor 신청 대기자 수 -->
+ <select id="mentorSys" resultType="map">
+	 SELECT * FROM V_COUNTS
+ </select>
+ 
+ </mapper>

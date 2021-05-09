@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="com.company.self_info.service.impl.Self_InfoMapper">
+	<select id="getSearchSelfList" resultType="com.company.self_info.service.Self_InfoVO">
+		SELECT SELF_NO, 
+			   RESUME_NO, 
+			   SELF_NAME, 
+			   SELF_CONTENT
+		FROM   SELF_INFO
+	</select>
+	<insert id="insertSelf">
+		INSERT INTO SELF_INFO(SELF_NO, 
+							  RESUME_NO, 
+							  SELF_NAME, 
+							  SELF_CONTENT)
+		VALUES				  ((SELECT NVL(MAX(SELF_NO), 0) + 1 FROM SELF_INFO),
+							   #{resume_no},
+							   #{self_name}, 
+							   #{self_content})
+	</insert>
+	<update id="updateSelf">
+		UPDATE SELF_INFO 
+			   SET SELF_NAME = #{self_name}, 
+			   SELF_CONTENT = #{self_content} 
+	    WHERE SELF_NO = #{self_no}
+	</update>
+	<delete id="deleteSelf">
+		DELETE FROM SELF_INFO
+		WHERE SELF_NO = #{self_no}
+	</delete>
+	<select id="getSelf" resultType="com.company.self_info.service.Self_InfoVO">
+		SELECT SELF_NO, 
+			   RESUME_NO, 
+			   SELF_NAME, 
+			   SELF_CONTENT
+		FROM   SELF_INFO
+		WHERE  RESUME_NO = #{resume_no}
+	</select>
+ </mapper>

@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+ <mapper namespace="com.company.mentoring.service.impl.MentoringMapper">
+ 
+ <!-- 김찬곤 ============================================================================  -->
+ 
+ 	<!-- 김찬곤 -->
+ 	<!-- 멘토링 리스트 호출 -->
+ 	<!-- 송다희 수정(검색, 페이징) -->
+ 	<select id="getMentoringList" resultType="com.company.mentoring.service.MentoringVO" parameterType="com.company.mentoring.service.MentoringVO">
+ 		SELECT B.* FROM(SELECT ROWNUM RN, A.*   FROM(
+ 		SELECT  MENTORING_NUMBER,
+ 				MENTORING_NAME,
+ 				MENTORING_LIMIT,
+ 				MENTORING_INTRODUCE,
+ 				MENTORING_PHOTO,
+ 				MENTORING_PRICE,
+ 				MENTORING_DATA,
+ 				MENTOR_ID,
+ 				MENTORING_BEGIN_DATE,
+ 				MENTORING_END_DATE,
+ 				MENTORING_CLICK,
+ 				MENTORING_OPEN_DATE,
+ 				MENTORING_KIND,
+ 				MENTORING_CONTENT,
+ 				MENTORING_REQUEST
+ 		FROM 	MENTORING
+ 		<where>
+		 <if test="mentoring_kind != null and mentoring_kind != ''">
+		     UPPER(MENTORING_KIND) LIKE '%'|| UPPER(#{mentoring_kind}) || '%'
+		 </if>
+		 <if test="mentoring_begin_date != null and mentoring_begin_date != ''">
+	            AND mentoring_begin_date BETWEEN TO_DATE(#{mentoring_begin_date}, 'yyyy-MM-dd') AND TO_DATE(#{mentoring_end_date}, 'yyyy-MM-dd')
+	         </if>
+	         <if test="mentoring_end_date != null and mentoring_end_date != ''">
+	            AND mentoring_end_date BETWEEN TO_DATE(#{mentoring_begin_date}, 'yyyy-MM-dd') AND TO_DATE(#{mentoring_end_date}, 'yyyy-MM-dd')
+	         </if>
+		</where>
+ 		ORDER BY MENTORING_BEGIN_DATE
+ 		) A   ) B  WHERE RN BETWEEN #{start} AND #{end}
+ 	</select>
+ 	
+ 	
+ 	<select id="getRandomImage" resultType="com.company.mentoring.service.MentoringVO">
+ 		SELECT  MENTORING_NUMBER,
+ 				MENTORING_NAME,
+ 				MENTORING_LIMIT,
+ 				MENTORING_INTRODUCE,
+ 				MENTORING_PHOTO,
+ 				MENTORING_PRICE,
+ 				MENTORING_DATA,
+ 				MENTOR_ID,
+ 				MENTORING_BEGIN_DATE,
+ 				MENTORING_END_DATE,
+ 				MENTORING_CLICK,
+ 				MENTORING_OPEN_DATE,
+ 				MENTORING_KIND,
+ 				MENTORING_CONTENT,
+ 				MENTORING_REQUEST,
+ 				DBMS_RANDOM.VALUE(1000, 10000) as rand
+ 		FROM 	MENTORING
+ 		ORDER BY RAND
+ 	</select>
+ 	
+ 	
+ 	<!-- 김찬곤 -->
+ 	<!-- 키워드 검색 -->
+ 	<select id="getKeywordMentoring" resultType="com.company.mentoring.service.MentoringVO">
+     	SELECT * FROM MENTORING
+     		WHERE MENTORING_NAME LIKE '%'||#{searchKeyword}||'%'
+ 	</select>
+ 	
+ 	<!-- 김찬곤 -->
+ 	<!-- 멘토링 등록 -->
+	<insert id="insertMentoring" parameterType="com.company.mentoring.service.MentoringVO" >
+	
+		INSERT INTO MENTORING
+		(
+		MENTORING_NUMBER,
+		MENTORING_NAME,
+		MENTORING_LIMIT,
+		MENTORING_INTRODUCE,
+		MENTORING_CONTENT,
+		MENTORING_PHOTO,
+		MENTORING_PRICE,
+		MENTOR_ID,	
+		MENTORING_BEGIN_DATE,
+		MENTORING_END_DATE,
+		MENTORING_KIND
+		)
+		VALUES
+		(
+		SEQ_MENTORING.NEXTVAL,
+		#{mentoring_name},
+		#{mentoring_limit},
+		#{mentoring_introduce},
+		#{mentoring_content},
+		#{mentoring_photo},
+		#{mentoring_price},
+		#{mentor_id},
+		to_date(#{mentoring_begin_date}, 'yyyy-MM-dd'),
+		to_date(#{mentoring_end_date}, 'yyyy-MM-dd'),
+		#{mentoring_kind}
+		)
+		
+	</insert>
+	
+	<!-- 김찬곤 -->
+	<!-- 멘토의 멘토링 코스 조회 -->
+	<select id="getMentoring" resultType="com.company.mentoring.service.MentoringVO">
+		SELECT
+			    MENTORING_NUMBER,
+				MENTORING_NAME,
+				MENTORING_LIMIT,
+				MENTORING_INTRODUCE,
+				MENTORING_CONTENT,
+				MENTORING_PHOTO,
+				MENTORING_PRICE,
+				MENTORING_DATA,
+				MENTOR_ID,
+				TO_CHAR(MENTORING_BEGIN_DATE, 'YYYY-MM-DD') as s_date,
+				TO_CHAR(MENTORING_END_DATE, 'YYYY-MM-DD') as e_date,
+				MENTORING_KIND
+		FROM MENTORING
+		WHERE MENTOR_ID = #{mentor_id}
+	</select>
+	
+	<!-- 김찬곤 -->
+	<!-- 멘토링 날짜 중복 체크 -->
+	<select id="mentoringRegisterCheck" resultType="com.company.mentoring.service.MentoringVO">
+		SELECT * 
+			FROM MENTORING
+		WHERE MENTORING_BEGIN_DATE BETWEEN #{mentoring_begin_date} AND #{mentoring_end_date}   
+		AND MENTORING_END_DATE BETWEEN #{mentoring_begin_date} AND #{mentoring_end_date}   
+		AND MENTOR_ID = #{mentor_id}
+	</select>
+	
+	<!-- 김찬곤 -->
+	<!-- 진행중인 멘토링 카운트 -->
+	<select id="getMentoringCnt" resultType="int">
+		SELECT COUNT(*) FROM MENTORING
+		WHERE MENTOR_ID = #{mentor_id}
+	</select>
+	
+	<!-- 김찬곤 -->
+	<!-- 멘토링 단건 조회 -->
+	<select id="getSearchMentoringChanGon" resultType="com.company.mentoring.service.MentoringVO">
+		SELECT
+			MENTORING_NUMBER,
+			MENTORING_NAME,
+			MENTORING_LIMIT,
+			MENTORING_INTRODUCE,
+			MENTORING_CONTENT,
+			MENTORING_PHOTO,
+			MENTORING_PRICE,
+			MENTOR_ID,	
+			TO_CHAR(MENTORING_END_DATE, 'YYYY-MM-DD') as e_date,
+			TO_CHAR(MENTORING_BEGIN_DATE, 'YYYY-MM-DD') as s_date,
+			MENTORING_KIND
+		FROM MENTORING
+		WHERE MENTORING_NUMBER = #{mentoring_number}
+	</select>
+	
+	<!-- 김찬곤 -->
+	<!-- 멘토링 상세페이지_유사한 멘토링 출력 -->
+	<select id="getRelatedMentoring" resultType="com.company.mentoring.service.MentoringVO" >
+		SELECT * 
+			FROM 
+				MENTORING
+			WHERE 
+				MENTORING_KIND = #{mentoring_kind}
+			ORDER BY 
+				MENTORING_NUMBER
+	</select>
+
+<!-- End of 김찬곤 ============================================================================  -->
+	
+	<!-- 멘토링 list 조회-->
+	<!-- 양소민 -->
+	<select id="getSearchMentoring" resultType="com.company.mentoring.service.MentoringVO">
+		SELECT
+				
+				TO_CHAR(MEN_START,'YYYY-MM-DD') AS "men_start",
+				TO_CHAR(MET_END,'YYYY-MM-DD') AS "met_end",
+				ID,
+				MENTEEID
+		FROM MYMENTORINGVU
+		WHERE MENTORING_NUMBER=#{mentoring_number}
+	</select>
+	
+	<select id="getMyMentoringListSom" resultType="com.company.mentoring.service.MentoringVO">
+		SELECT 
+		I.MENTORING_NUMBER,
+		I.MENTORING_NAME,
+		I.MENTORING_LIMIT,
+		I.MENTORING_CONTENT,
+		I.MENTORING_PHOTO,
+		I.MENTORING_PRICE,
+		I.MENTORING_DATA,
+		I.MENTOR_ID,
+		TO_CHAR(I.MENTORING_END_DATE,'YYYY-MM-DD') AS "mentoring_end_date",
+		TO_CHAR(I.MENTORING_BEGIN_DATE,'YYYY-MM-DD') AS "mentoring_begin_date",
+		M.ID
+		 FROM MENTORING I
+		
+		JOIN MENTOR M
+		ON I.MENTOR_ID=M.MENTOR_ID
+		WHERE ID=#{id}
+	</select>
+	
+	
+	<!-- 멘토링 중복 체크 -->
+	<select id="MentoringRegisterCheck" resultType="com.company.mentoring.service.MentoringVO">
+		select 
+			MENTORING_BEGIN_DATE, MENTORING_END_DATE
+		FROM 
+			MENTORING
+		WHERE MENTORING_BEGIN_DATE = #{mentoring_begin_date}
+	</select>
+	
+	<!-- 멘토링 코스 수정 -->
+	<update id="updateMentoring" parameterType="MentoringVO">
+	 UPDATE  MENTORING
+	 SET 
+	 MENTORING_NAME =#{mentoring_name},
+	 MENTORING_LIMIT =#{mentoring_limit},
+	 MENTORING_CONTENT =#{mentoring_content},
+	 <!-- MENTORING_PHOTO=#{mentoring_photo}, -->
+	 MENTORING_PRICE=#{mentoring_price}
+	 <!-- ,MENTORING_BEGIN_DATE=#{mentoring_begin_date},
+	 MENTORING_END_DATE=#{mentoring_end_date} -->
+	 WHERE MENTORING_NUMBER=#{mentoring_number}
+	</update>
+
+
+	<!-- 멘토링 코스 상세조회 -->
+	<select id="getMentoringDetail" resultType="MentoringVO">
+	 SELECT
+	 MENTORING_NUMBER, 
+	 MENTORING_NAME, 
+	 MENTORING_LIMIT,
+	 MENTORING_CONTENT, 
+	 MENTORING_PHOTO, 
+	 MENTORING_PRICE, 
+	 MENTORING_DATA,
+	 MENTOR_ID, 
+	 TO_CHAR(MENTORING_BEGIN_DATE, 'yyyy-mm-dd') AS "mentoring_begin_date",
+	 TO_CHAR(MENTORING_END_DATE,'yyyy-mm-dd') AS "mentoring_end_date",
+	 MENTORING_CLICK,
+	 MENTORING_OPEN_DATE 
+	 FROM MENTORING
+	 WHERE MENTORING_NUMBER = #{mentoring_number}
+	</select>
+	
+	<!-- 송다희 추가 -->
+	<!-- 페이징&검색 -->
+	<select id="getMcount" resultType="int">
+		SELECT COUNT(*)
+		FROM MENTORING
+		<where>
+			<if test="mentoring_kind != null and mentoring_kind != ''">
+				UPPER(MENTORING_KIND) LIKE '%'|| UPPER(#{mentoring_kind}) || '%'
+			</if>
+			<if test="mentoring_begin_date != null and mentoring_begin_date != ''">
+	            AND mentoring_begin_date BETWEEN TO_DATE(#{mentoring_begin_date}, 'yyyy-MM-dd') AND TO_DATE(#{mentoring_end_date}, 'yyyy-MM-dd')
+	         </if>
+	         <if test="mentoring_end_date != null and mentoring_end_date != ''">
+	            AND mentoring_end_date BETWEEN TO_DATE(#{mentoring_begin_date}, 'yyyy-MM-dd') AND TO_DATE(#{mentoring_end_date}, 'yyyy-MM-dd')
+	         </if>
+		</where>
+	</select>
+	
+	<!-- 정원수 -->
+	<select id="getLimit" resultType="MentoringVO">
+		SELECT MENTORING_LIMIT 
+		FROM MENTORING
+		WHERE MENTORING_NUMBER = #{mentoring_number}
+	</select>
+	
+	<!-- 결제내역 정원수 -->
+	<select id="getNumberLimit" resultType="MentoringVO">
+		SELECT COUNT(*)
+		FROM MENTORING MENTORING, SHOPPING SHOPPING
+		WHERE MENTORING.MENTORING_NUMBER = SHOPPING.MENTORING_NUMBER
+		AND SHOPPING.ID = #{id}
+	</select>
+	<!-- 송다희 추가 -->
+</mapper>

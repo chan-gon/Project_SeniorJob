@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.company.manager.sum.service.impl.manSumMapper">
+<!-- 쇼핑 전체 조회 -->
+<select id="sumList" parameterType="com.company.manager.sum.sumVO" resultType="com.company.manager.sum.sumVO">
+	SELECT * FROM SHOPPING 
+	where 1=1
+	<include refid="search"></include>
+</select>
+
+<!-- 월별 매출 조회 -->
+<select id="monsum" parameterType="com.company.manager.sum.sumVO" resultType="int">
+	SELECT NVL(SUM(MEN_PRICE),0) 
+	FROM SHOPPING 
+	where 1=1
+	<include refid="search"></include>
+</select> 
+
+<!--쇼핑 검색 -->
+<sql id="search">
+	<if test="sDate != null">
+		<![CDATA[
+			AND S_DATE >= TO_DATE(#{sDate}, 'yyyyMM')
+			AND S_DATE < TO_DATE(#{eDate}, 'yyyyMM')
+		]]> 
+	</if>
+</sql>
+
+<!-- 월 포함 총 합계 -->
+<select id ="summonth" resultType="map" >
+	select * from v_sum 
+</select>
+
+</mapper>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="com.company.portfolio.service.impl.PortfolioMapper">
+	<select id="getSearchPortList" resultType="com.company.portfolio.service.PortfolioVO">
+		SELECT PORT_NO, RESUME_NO, PORTFOLIO
+		FROM   PORTFOLIO
+	</select>
+	
+	<insert id="insertPort" parameterType="PortfolioVO">
+		INSERT INTO PORTFOLIO(PORT_NO,
+							  RESUME_NO
+							  <if test="portfolio != null and portfolio !=''">
+							  ,PORTFOLIO 
+							  </if>
+							  )
+		values				 ((SELECT NVL(MAX(PORT_NO), 0) + 1 FROM PORTFOLIO),
+							  #{resume_no} 
+							  <if test="portfolio != null and portfolio !=''">
+							  ,#{portfolio}
+							  </if>
+							  )
+	</insert>
+	<update id="updatePort">
+		UPDATE PORTFOLIO SET 
+			   PORTFOLIO = #{portfolio}
+		WHERE  PORT_NO = #{port_no}
+	</update>
+	<delete id="deletePort">
+		DELETE FROM PORTFOLIO 
+		WHERE  PORT_NO = #{port_no}
+	</delete>
+	<select id="getPort" resultType="com.company.portfolio.service.PortfolioVO">
+		SELECT PORT_NO, RESUME_NO, PORTFOLIO
+		FROM   PORTFOLIO
+		WHERE  RESUME_NO = #{resume_no}
+	</select>
+ </mapper>

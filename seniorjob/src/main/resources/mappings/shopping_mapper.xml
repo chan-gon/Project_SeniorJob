@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="com.company.shopping.service.impl.ShoppingMapper">
+ 
+ 
+ 	<!-- 양소민 추가 -->
+ 	<!-- 마이페이지_수강중인 멘토링 -->
+	<select id="getSearchShopping" resultType="com.company.shopping.service.ShoppingVO">
+		SELECT * FROM MENTORINGVU 
+		WHERE ID=#{id}
+	</select>
+	
+	<!-- 양소민 추가 -->
+ 	<!-- 마이페이지_결제내역 -->
+	<select id="getSearchPay" resultType="ShoppingVO">
+		SELECT *
+		FROM SHOPPING S
+		JOIN MENTORING M
+		ON S.MENTORING_NUMBER = M.MENTORING_NUMBER
+		WHERE ID=#{id}
+	</select>
+	
+<!-- 김찬곤 ============================================================================  -->
+
+ 	<!-- 김찬곤 추가 -->
+ 	<!-- 멘토링 결제_장바구니에 담겼을 때 -->
+ 	<update id="mentoringPayProcBasket" parameterType="com.company.shopping.service.ShoppingVO">
+ 	UPDATE SHOPPING
+ 		SET
+			S_STATE = '구매완료'
+ 		WHERE SHOPPING_NO = #{shopping_no}
+ 	</update>
+ 	
+ 	<!-- 김찬곤 추가 -->
+ 	<!-- 멘토링 결제_장바구니에 담지 않고 바로 결제할 때 -->
+ 	<insert id="mentoringPayProc" parameterType="com.company.shopping.service.ShoppingVO">
+ 		INSERT INTO SHOPPING(
+							SHOPPING_NO,
+							ID,
+							MENTORING_NUMBER,
+							S_DATE,
+							MEN_START,
+							MET_END,
+							S_STATE,
+							MEN_PRICE
+							)
+		VALUES				((SELECT NVL(MAX(SHOPPING_NO),0)+1 FROM SHOPPING),
+							#{id},
+							#{mentoring_number},
+							sysdate,
+							to_date(#{men_start},'YYYY/MM/DD HH24:MI:SS'),
+							to_date(#{met_end},'YYYY/MM/DD HH24:MI:SS'),
+							'구매완료',
+							#{mentoring_price}
+							)
+ 	</insert>
+ 	
+ 	<!-- 김찬곤 추가 -->
+ 	<!-- 결제 중복체크 -->
+ 	<select id="paymentChk" resultType="int" >
+ 		SELECT COUNT(*) FROM SHOPPING
+ 		WHERE ID = #{id}
+ 		AND MENTORING_NUMBER = #{mentoring_number}
+ 		AND S_STATE = '구매완료'
+ 	</select>
+ 	
+ 	<!-- 김찬곤 추가 -->
+ 	<!-- 결제 완료값 가져오기 / API 활용한 결제내역 호출 못해서 요거 사용중임 -->
+ 	<select id="getPayInfo" resultType="com.company.shopping.service.ShoppingVO">
+ 		SELECT * FROM SHOPPING
+ 		WHERE ID = #{id}
+ 		AND MENTORING_NUMBER = #{mentoring_number}
+ 		AND S_STATE = '구매완료'
+ 	</select>
+ 	
+<!-- End of 김찬곤 ============================================================================  -->
+
+ </mapper>

@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="com.company.mentoring_reviews.service.impl.Mentoring_ReviewsMapper">
+	
+<!-- 후기 등록 SQL 문구 작성 페이지 ============================================================== -->
+
+<!--후기 검색 동적sql -->
+	<sql id="search">
+		<if test="searchType != null">
+				<if test="searchType == 't'.toString()">AND TITLE LIKE '%' || #{keyword} || '%'</if>
+				<if test="searchType == 'c'.toString()">AND CONTENT LIKE '%' || #{keyword} || '%'</if>
+				<if test="searchType == 'w'.toString()">AND ID LIKE '%' || #{keyword} || '%'</if>
+				<if test="searchType == 'tc'.toString()">AND (TITLE LIKE '%' || #{keyword} || '%') or (CONTENT LIKE '%' || #{keyword} || '%')</if>
+		</if>
+	</sql>
+	
+<!--후기 페이징 처리(1) 페이지 갯수 체크 -전체 페이지 갯수  -->
+	<select id="listCount"  parameterType="MenSearchCriteria" resultType="int">
+		SELECT COUNT(SEQ) 
+		FROM MENTORING_REVIEWS
+		WHERE 1=1 
+		<include refid="search"></include>
+		AND SEQ > 0	  
+	</select>
+	
+	
+<!--후기 페이징 처리(2) 페이지 처리 후 게시글 조회 -전체조회 -->
+	<select id="list" resultType="Mentoring_ReviewsVO" parameterType="Mentoring_ReviewsVO">
+		SELECT 	SEQ, CATEGORY_A, CATEGORY_B, W_DATE, CLICK, CONTENT,R_FILE,ID,TITLE 
+		FROM 	(SELECT SEQ, CATEGORY_A, CATEGORY_B, W_DATE, CLICK, CONTENT, R_FILE, ID,
+						TITLE, ROW_NUMBER() OVER(ORDER BY SEQ DESC) AS RNUM
+				 FROM MENTORING_REVIEWS
+				 WHERE 1=1 
+				<include refid="search"></include>) 
+				 MENTORING_REVIEWS WHERE RNUM
+				 BETWEEN #{rowStart} AND #{rowEnd}
+				 ORDER BY SEQ DESC
+	</select>	
+	
+<!--공지사항 이전글, 다음글-->
+<select id="menPreNext" resultType="Mentoring_ReviewsVO" parameterType="Mentoring_ReviewsVO">
+	SELECT SEQ, MENPREV, MENPREV_TITLE, MENNEXT, MENNEXT_TITLE 
+	FROM ( SELECT  SEQ, LAG(SEQ,1) OVER(ORDER BY SEQ) MENPREV,
+						LAG(TITLE,1) OVER(ORDER BY SEQ) MENPREV_TITLE,    
+						LEAD(SEQ,1) OVER(ORDER BY SEQ) MENNEXT, 
+						LEAD(TITLE,1) OVER(ORDER BY SEQ) MENNEXT_TITLE
+ 		   FROM MENTORING_REVIEWS)
+ 	WHERE SEQ= #{seq}  
+</select>	
+
+<!-- 후기 단건조회 -->
+<select id="getSearchMenReview" parameterType="Mentoring_ReviewsVO" resultType="Mentoring_ReviewsVO">
+	SELECT SEQ, CATEGORY_A, CATEGORY_B, W_DATE, CLICK, CONTENT, R_FILE, ID, TITLE 
+	FROM MENTORING_REVIEWS
+	WHERE SEQ = #{seq}  
+</select>
+
+<!-- 후기 등록 -->
+<insert id="insertMenReview" parameterType="Mentoring_ReviewsVO">
+	INSERT INTO MENTORING_REVIEWS(SEQ, CATEGORY_A, CATEGORY_B, W_DATE, CONTENT, CLICK, R_FILE,
+				ID, MENTORING_NUMBER, TITLE) 
+	values ((SELECT NVL(MAX(SEQ),0)+1 FROM mentoring_reviews), '없음', '없음',  sysdate,
+		    #{content}, '0', '파일없음', #{id}, #{mentoring_number}, #{title})			 				
+</insert>
+
+<!-- 후기 수정 -->
+<update id="updateMenReview" parameterType="Mentoring_ReviewsVO"> 
+ UPDATE MENTORING_REVIEWS <set> title = #{title}, content = #{content} MENTORING_NUMBER = #{mentoring_number} </set>
+ WHERE SEQ=#{seq} AND ID= #{id}
+</update>
+
+<!-- 후기 삭제 -->
+<delete id="deleteMenReview" parameterType="Mentoring_ReviewsVO">
+	DELETE FROM MENTORING_REVIEWS 
+				WHERE SEQ = #{seq}
+</delete>
+
+<!-- 후기 조회수 증가 -->
+<update id="upnumMenReview" parameterType="Mentoring_ReviewsVO">
+	UPDATE MENTORING_REVIEWS SET
+		CLICK = NVL((CLICK),0)+1
+		WHERE SEQ = #{seq}
+</update>	
+	
+<!-- 인기 조회수 후기 페이지 띄우기 -->
+<select id="pupMenUp" parameterType="Mentoring_ReviewsVO" resultType="Mentoring_ReviewsVO">
+	UPDATE MENTORING_REVIEWS SET CLICK = CLICK + 1 WHERE SEQ = #{seq}
+</select>	
+
+<!-- 인기 조회수 후기 페이지 띄우기_김찬곤 -->
+<!-- CDATA https://epthffh.tistory.com/entry/Mybatis-%EC%97%90%EC%84%9C-CDATA-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0 -->
+	<select id="getPopularArticleList" resultType="Mentoring_ReviewsVO">
+		<!-- SELECT A.MENTORING_KIND "mentoringVO.mentoring_kind" , B.*
+			FROM 
+				MENTORING A, MENTORING_REVIEWS B
+			WHERE 
+				A.MENTORING_NUMBER = B.MENTORING_NUMBER
+			ORDER BY CLICK DESC -->
+			
+			SELECT * 
+				FROM
+					( SELECT * FROM MENTORING_REVIEWS ORDER BY CLICK DESC )
+				WHERE 
+					<![CDATA[ ROWNUM <= 3 ]]>
+	</select>
+	
+	<!-- 송다희 추가 -->
+	<!-- 멘토링 댓글 단건조회 -->
+	<select id="getReviewsList" resultType="Mentoring_ReviewsVO">
+<!-- 	SELECT B.* FROM(SELECT ROWNUM RN, A.*   FROM( -->
+	SELECT	 MENTORING_REVIEWS.SEQ, 
+	  		 MENTORING_REVIEWS.W_DATE, 
+	  		 MENTORING_REVIEWS.CONTENT, 
+	  		 MENTORING_REVIEWS.ID, 
+	  		 MENTORING_REVIEWS.MENTORING_NUMBER
+	FROM 	 MENTORING_REVIEWS MENTORING_REVIEWS, MENTORING MENTORING
+	WHERE	 MENTORING_REVIEWS.MENTORING_NUMBER = MENTORING.MENTORING_NUMBER
+	AND 	 MENTORING_REVIEWS.MENTORING_NUMBER = #{mentoring_number}
+	ORDER BY MENTORING_REVIEWS.SEQ
+<!-- 	) A   ) B  WHERE RN BETWEEN #{start} AND #{end} -->
+	</select>
+	<!-- 구매내역 조회 -->
+	<select id="searchShopping" resultType="int" >
+	SELECT COUNT(*)
+	FROM MENTORING MENTORING, SHOPPING SHOPPING
+	WHERE MENTORING.MENTORING_NUMBER = SHOPPING.MENTORING_NUMBER
+  	AND SHOPPING.ID=#{id}
+  	AND SHOPPING.MENTORING_NUMBER =#{mentoring_number}
+	</select>
+	<!-- 등록 -->
+	<insert id="insertReviewsMen">
+	INSERT INTO MENTORING_REVIEWS(SEQ, 
+								  W_DATE, 
+								  CONTENT, 
+								  ID, 
+								  MENTORING_NUMBER)
+	VALUES	(( SELECT NVL(MAX(SEQ), 0) +1 FROM MENTORING_REVIEWS  ),
+			 SYSDATE,
+			 #{content},
+			 #{id},
+			 #{mentoring_number})
+	</insert>
+	<!-- 삭제 -->
+	<delete id="deleteReviews">
+	DELETE FROM MENTORING_REVIEWS WHERE SEQ = #{seq}
+	</delete>
+	<!-- 수정 -->
+	<update id="updateReviews">
+	UPDATE MENTORING_REVIEWS SET CONTENT = #{content} WHERE SEQ = #{seq}
+	</update>
+	<!-- 후기글 작성은 한번만 하는 쿼리 -->
+	<select id="getReviewOne" resultType="int">
+	  SELECT COUNT(*)
+	  FROM MENTORING_REVIEWS
+	  WHERE ID = #{id}
+	  AND MENTORING_NUMBER = #{mentoring_number}
+	</select>
+	
+	<select id="getOneReviews" resultType="Mentoring_ReviewsVO">
+		SELECT	 MENTORING_REVIEWS.SEQ, 
+		  		 MENTORING_REVIEWS.W_DATE, 
+		  		 MENTORING_REVIEWS.CONTENT, 
+		  		 MENTORING_REVIEWS.ID, 
+		  		 MENTORING_REVIEWS.MENTORING_NUMBER
+		FROM 	 MENTORING_REVIEWS MENTORING_REVIEWS, MENTORING MENTORING
+		WHERE	 MENTORING_REVIEWS.MENTORING_NUMBER = MENTORING.MENTORING_NUMBER
+		AND 	 MENTORING_REVIEWS.MENTORING_NUMBER = #{mentoring_number}
+	  	AND 	 MENTORING_REVIEWS.SEQ = #{seq}
+		ORDER BY MENTORING_REVIEWS.SEQ
+	</select>
+	<!-- 페이징 -->
+	<select id="getRcount" resultType="int">
+		SELECT COUNT(*)
+		FROM MENTORING_REVIEWS
+	</select>
+	<!-- 후기 단건조회 -->
+	<select id="getReviewsUp" resultType="Mentoring_ReviewsVO">
+	SELECT SEQ,
+		   W_DATE,
+		   CONTENT,
+		   ID,
+		   MENTORING_NUMBER
+	FROM   MENTORING_REVIEWS
+	WHERE  SEQ = #{seq}	   
+	</select>
+ </mapper>
