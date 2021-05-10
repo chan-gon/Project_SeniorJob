@@ -179,35 +179,6 @@ input[name=m_numOfDays]{font-size:large; color:red}
 		}
 	});
 
-	// 미리보기
-	$(document).on("click", "#preview", function(){
-		window.name = "MentoringRegisterForm";
-		var openWin = window.open("mentoringPreview",
-                "미리보기", "width=900, height=900, resizable = no, scrollbars = no");
-	});
-	
-	// 멘토링 등록
-	/* function mentoringReg(){
-		var flag = true;
-		var param = $('#frm').serialize();
-		
-		$.ajax({
-			url: "mentoringRegisterCheck",
-			data: param,		
-			dataType: "json",
-			success:function(result){
-					alert("성공" + result);
-					location.href ="getMentorList";
-					flag = true;
-			},error:function(response){
-				var msg = "해당 기간에 등록된 멘토링이 있습니다.";
-				var response = response.list;
-				$.each(response, function(i){ alert(response[i]); });
-				flag = false;
-			}
-		});
-		return flag;
-	} */
 </script>
 
 </body>

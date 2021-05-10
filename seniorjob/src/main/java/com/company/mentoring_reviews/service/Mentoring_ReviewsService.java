@@ -2,9 +2,6 @@ package com.company.mentoring_reviews.service;
 
 import java.util.List;
 
-import com.company.service_center.PagingVO;
-import com.company.service_center.SearchCriteria;
-
 public interface Mentoring_ReviewsService {
 	
 
@@ -40,7 +37,6 @@ public interface Mentoring_ReviewsService {
 			
 			public List<Mentoring_ReviewsVO> getPopularArticleList(Mentoring_ReviewsVO vo); // 인기 조회수 후기 페이지 띄우기_김찬곤
 			
-			//송다희 추가
 			//후기
 			public List<Mentoring_ReviewsVO> getReviewsList(Mentoring_ReviewsVO vo);
 			// 구매내역 조회

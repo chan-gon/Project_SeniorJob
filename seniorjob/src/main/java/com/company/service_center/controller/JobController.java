@@ -29,9 +29,6 @@ public class JobController {
 		
 		String url = "https://job.incruit.com/jobdb_list/searchjob.asp?ct=3&ty=2&cd="+local;
 		Document doc = null;
-//		System.out.println("======================================================");
-//		System.out.println("url: "+ url);
-//		System.out.println("===========================sswwdd===========================");
 		try {
 			doc = Jsoup.connect(url).get();
 			

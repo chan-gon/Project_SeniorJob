@@ -19,9 +19,8 @@ public class MentoringServiceImpl implements MentoringService {
 	
 	@Autowired MentoringMapper dao;
 
-//	--------------------------------------------------------김찬곤-----------------------------------------------------------------------------------------------------
 	
-	// 멘토링 등록_김찬곤
+	// 멘토링 등록
 	@Override
 	public void insertMentoring(MentoringVO vo, HttpServletRequest request) throws IllegalStateException, IOException {
 		
@@ -48,31 +47,27 @@ public class MentoringServiceImpl implements MentoringService {
 		}
 	}
 	
-	// 김찬곤	
 	@Override
 	public List<MentoringVO> mentoringRegisterCheck(MentoringVO vo) {
 		return dao.mentoringRegisterCheck(vo);
 	}
-	// 김찬곤
 	@Override
 	public List<MentoringVO> getMentoringList(MentoringVO vo) {
 		return dao.getMentoringList(vo);
 	}
-
-	// 김찬곤
 	@Override
 	public List<MentoringVO> getKeywordMentoring(MentoringVO vo) {
 		return dao.getKeywordMentoring(vo);
 	}
 
-	// 진행중인 멘토링 카운트_김찬곤 
+	// 진행중인 멘토링 카운트
 	@Override
 	public int getMentoringCnt(MentoringVO vo) {
 		int result = dao.getMentoringCnt(vo);
 		return result;
 	}
 
-	// 멘토링 단건 조회_김찬곤
+	// 멘토링 단건 조회
 	@Override
 	public MentoringVO getSearchMentoringChanGon(MentoringVO vo) {
 		return dao.getSearchMentoringChanGon(vo);
@@ -84,7 +79,6 @@ public class MentoringServiceImpl implements MentoringService {
 		return dao.getRelatedMentoring(vo);
 	}
 	
-//	-------------------------------------------------------- End of 김찬곤-----------------------------------------------------------------------------------------------------
 
 	@Override
 	public int updateMentoring(MentoringVO vo) {
@@ -111,24 +105,15 @@ public class MentoringServiceImpl implements MentoringService {
 		return dao.MentoringRegisterCheck(vo);
 	}
 
-	/*
-	 * @Override public List<MentoringVO> getMentoringList(MentoringVO vo) { return
-	 * dao.getMentoringList(vo); }
-	 */
-
 	@Override
 	public MentoringVO getMentoringDetail(MentoringVO vo) {
 		return dao.getMentoringDetail(vo);
 	}
-
 	
-	//양소민
 	@Override
 	public List<MentoringVO> getMyMentoringListSom(MentoringVO vo) {
 		return dao.getMyMentoringListSom(vo);
 	}
-
-	//송다희 추가
 
 	@Override
 	public int getMcount(MentoringVO vo) {

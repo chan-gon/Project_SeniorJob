@@ -20,7 +20,6 @@ public class FollowingController {
 	@Autowired FollowService followService;
 	@Autowired MentorService mentorService;
 
-//	--------------------------------------------------------김찬곤-----------------------------------------------------------------------------------------------------
 	//팔로우 목록
 	@RequestMapping("/following")
 	public String following(HttpServletRequest req, FollowingVO vo, Model model) {
@@ -74,7 +73,5 @@ public class FollowingController {
 			return null;
 		}
 	}
-//	--------------------------------------------------------End of 김찬곤-----------------------------------------------------------------------------------------------------	
-	
 	
 }

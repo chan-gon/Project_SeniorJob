@@ -3,9 +3,7 @@
  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
  <mapper namespace="com.company.mentor.service.impl.MentorMapper">
  
- <!-- 김찬곤 ============================================================================  -->
- 
- 	<!-- 전체검색 / 지역 검색 / 직무 검색_김찬곤  --> 
+ 	<!-- 전체검색 / 지역 검색 / 직무 검색  --> 
 	<select id="getMentorList" resultType="com.company.mentor.service.MentorVO">
 		SELECT M.*, U.AUTH "usersVO.auth", U.NAME "usersVO.name"
 		FROM 
@@ -17,7 +15,7 @@
 		ORDER BY MENTOR_ID
 	</select>
 	
-	<!-- 키워드 검색_김찬곤 -->
+	<!-- 키워드 검색 -->
 	<select id="getKeywordSearch" resultType="com.company.mentor.service.MentorVO">
 		SELECT M.*, U.AUTH "usersVO.auth", U.NAME "usersVO.name"
 		FROM 
@@ -32,12 +30,11 @@
 			 OR MENTORING_AGE LIKE '%'||#{searchKeyword}||'%' 
 			 OR MENTOR_DUTY LIKE '%'||#{searchKeyword}||'%' 
 			 )
-			
 		ORDER BY 
 			MENTOR_ID
 	</select>
 		
-	<!-- 체크박스 검색_김찬곤 -->	
+	<!-- 체크박스 검색 -->	
 	<select id="getSearchMentorDuty" resultType="com.company.mentor.service.MentorVO">
 	SELECT M.*, U.AUTH "usersVO.auth", U.NAME "usersVO.name"
 	FROM 
@@ -53,7 +50,7 @@
 		</foreach>								
 	</select>
 	
-	<!-- 멘토 등록_김찬곤 -->
+	<!-- 멘토 등록 -->
 	<insert id="MentorRegisterProc" parameterType="com.company.mentor.service.MentorVO">
 		INSERT INTO MENTOR
 		(
@@ -90,13 +87,13 @@
 		)
 	</insert>
 	
-	<!-- 멘토 등록 중복 체크_김찬곤 -->
+	<!-- 멘토 등록 중복 체크 -->
 	<select id="mentorRegisterCheck" resultType="com.company.mentor.service.MentorVO" parameterType="com.company.mentor.service.MentorVO">
 		SELECT * FROM MENTOR
 		WHERE ID = #{id}
 	</select>
 	
-	<!-- 멘토 상세페이지_김찬곤 -->
+	<!-- 멘토 상세페이지 -->
 	<select id="getMentor" resultType="com.company.mentor.service.MentorVO" parameterType="com.company.mentor.service.MentorVO">
 	SELECT U.name "usersVO.name", M.*
 	FROM 
@@ -107,7 +104,7 @@
 		M.MENTOR_ID = #{mentor_id}
 	</select>
 	
-	<!-- 세부검색: 최신순(멘토등록일자 기준)_김찬곤 -->
+	<!-- 세부검색: 최신순(멘토등록일자 기준) -->
 	<select id="getMentorByDate" resultType="com.company.mentor.service.MentorVO">
    		SELECT M.*, U.AUTH "usersVO.auth", U.NAME "usersVO.name"
 		FROM 
@@ -120,7 +117,7 @@
 			MENTOR_DATE
 	</select>
 	
-	<!-- 세부검색: 인기순(팔로우숫자 기준)_김찬곤 -->
+	<!-- 세부검색: 인기순(팔로우숫자 기준) -->
 	<select id="getMentorByFollow" resultType="com.company.mentor.service.MentorVO">
 		SELECT M.*, U.AUTH "usersVO.auth", U.NAME "usersVO.name"
 		FROM 
@@ -133,7 +130,7 @@
 			M.MENTOR_F_NUM
 	</select>
 	
-	<!-- 멘토 팔로우 클릭 시 멘토 팔로우 숫자 추가_김찬곤 -->
+	<!-- 멘토 팔로우 클릭 시 멘토 팔로우 숫자 추가 -->
 	<update id="getUpdateFNumPlus">
 		UPDATE MENTOR
 		SET 
@@ -142,7 +139,7 @@
 			MENTOR_ID = #{mentor_id}
 	</update>	
 	
-	<!-- 멘토 팔로우 클릭 시 멘토 팔로우 숫자 제거_김찬곤 -->
+	<!-- 멘토 팔로우 클릭 시 멘토 팔로우 숫자 제거 -->
 	<update id="getUpdateFNumMinus">
 		UPDATE MENTOR
 		SET 
@@ -151,27 +148,7 @@
 			MENTOR_ID = #{mentor_id}
 	</update>
 	
-	<!--페이징 처리(1) 레코드 건수_김찬곤  -->
-	<!-- <select id="getCountMentor" resultType="int">
-		SELECT COUNT(*) FROM MENTOR
-	</select> -->
 	
-<!-- 사용하지 않는 쿼리  -->	
-	<!--페이징 처리(2) 페이지 처리 후 지정된 범위의 멘토 조회_김찬곤  -->
-	<!-- <select id="getSearchMentor" resultType="com.company.mentor.service.MentorVO">
-		SELECT * FROM(
-			SELECT ROWNUM RN, A.* FROM(
-				SELECT * FROM MENTOR
-				ORDER BY MENTOR_ID
-				) A
-			)
-		WHERE RN BETWEEN #{start} AND #{end}
-	</select> -->
-<!-- End of 사용하지 않는 쿼리  -->	
-	
-<!-- End of 김찬곤 ============================================================================  -->	
-	
-	<!-- 양소민 추가 -->
 	<!-- 멘토 아이디 조회 -->
 	<select id="getMentorId" resultType="string">
 	SELECT MENTOR_ID
@@ -188,7 +165,6 @@
 	WHERE MENTOR_ID=#{menId}
 	</select>
 	
-<!-- 정병기 -->	
 <!-- 멘토 상태 승급 -->	
 <update id="authMento"	parameterType="com.company.mentor.service.MentorVO">
 	UPDATE MENTOR SET MENTOR_CONFIRM_STATUS ='승인완료'

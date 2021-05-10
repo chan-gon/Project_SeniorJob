@@ -13,7 +13,6 @@ import com.company.mentoring_reviews.service.Mentoring_ReviewsVO;
 public class Mentoring_ReviewsImpl implements Mentoring_ReviewsService {
 
 	@Autowired Mentoring_ReviewsMapper dao;
-	
 
 	@Override
 	public List<Mentoring_ReviewsVO> list(MenSearchCriteria scri) {
@@ -81,7 +80,6 @@ public class Mentoring_ReviewsImpl implements Mentoring_ReviewsService {
 		return dao.getPopularArticleList(vo);
 	}
 
-	//송다희 추가=================================================================
 	@Override
 	public List<Mentoring_ReviewsVO> getReviewsList(Mentoring_ReviewsVO vo) {
 		return dao.getReviewsList(vo);
@@ -121,14 +119,10 @@ public class Mentoring_ReviewsImpl implements Mentoring_ReviewsService {
 	public int getRcount(Mentoring_ReviewsVO vo) {
 		return dao.getRcount(vo);
 	}
-	//========================================================================
 
 	@Override
 	public Mentoring_ReviewsVO getReviewsUp(Mentoring_ReviewsVO vo) {
 		return dao.getReviewsUp(vo);
 	}
-
-
-
 
 }

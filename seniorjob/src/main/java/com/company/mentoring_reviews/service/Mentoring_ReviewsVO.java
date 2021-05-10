@@ -2,8 +2,6 @@ package com.company.mentoring_reviews.service;
 
 import java.util.Date;
 
-import org.springframework.format.annotation.DateTimeFormat;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.Data;
@@ -30,7 +28,6 @@ public class Mentoring_ReviewsVO { //멘토링 후기
 	private int menNext; //다음글의 글번호를 담을 필드
 	private String menNext_title; //다음글의 글제목을 담을 필드
 	
-	//송다희 추가
 	//paging
 	Integer page = 1;
 	int start = 1;

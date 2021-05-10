@@ -38,8 +38,7 @@ public interface InquireMapper {
 	
 	public List<InquireVO> getInquireListY(SearchCriteria scri); //전체 답변완료
 	public List<InquireVO> getInquireListN(SearchCriteria scri); //전체 답변완료
-	//
-	//===============================================//
+
 	//유저 내문의목록조회
 	public List<InquireVO> userInquireList(Map<String, Object> map);
 	//유저 내문의목록단건조회

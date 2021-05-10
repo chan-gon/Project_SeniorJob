@@ -2,7 +2,6 @@ package com.company.mentor.service.impl;
 
 import java.util.List;
 
-import com.company.mentor.service.MentorSearchVO;
 import com.company.mentor.service.MentorVO;
 
 public interface MentorMapper {
@@ -18,10 +17,6 @@ public interface MentorMapper {
 	
 	public void getUpdateFNumPlus(MentorVO vo); // 멘토 팔로우 클릭 시 멘토 팔로우 숫자 추가_김찬곤
 	public void getUpdateFNumMinus(MentorVO vo); // 멘토 팔로우 클릭 시 멘토 팔로우 숫자 제거_김찬곤
-	
-	// 페이징 구현
-	public int getCountMentor(); // 게시물 총 개수
-	public List<MentorVO> getSearchMentor(MentorSearchVO vo); // 페이징 처리된 게시글 조회
 	
 	public List<MentorVO> getMentorByDate(MentorVO vo); // 멘토리스트 세부검색: 최신순
 	public List<MentorVO> getMentorByFollow(MentorVO vo); // 멘토리스트 세부검색: 인기순

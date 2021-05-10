@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.company.mentoring.service.MentoringVO;
 import com.company.shopping.service.ShoppingService;
 import com.company.shopping.service.ShoppingVO;
 
@@ -20,7 +19,6 @@ public class ShoppingController {
 	
 	@Autowired ShoppingService spService;
 	
-	//양소민 추가
 	@GetMapping("/getSearchShopping")   //마이페이지_수강중인 멘토링
 	public String getSearchShopping(ShoppingVO vo, Model model,HttpServletRequest request) {
 		HttpSession session = request.getSession();
@@ -41,8 +39,6 @@ public class ShoppingController {
 		return "mypage/payDetail";
 	}
 	
-	
-	// 김찬곤 추가
 	// 멘토 상세페이지_장바구니 중복 체크&장바구니 담기
 	@ResponseBody
 	@RequestMapping(value="paymentChk")

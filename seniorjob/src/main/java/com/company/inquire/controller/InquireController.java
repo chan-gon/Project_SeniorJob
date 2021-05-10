@@ -78,12 +78,6 @@ public class InquireController {
 				model.addAttribute("pageMaker", pageMaker);
 			}
 			
-			
-			
-			
-			
-			
-			
 		}else if(scri.getOptionValue().equals("환불")) {
 			System.out.println("============================ssqq2===========================");
 			model.addAttribute("list", inquireMapper.getInquireList3(scri));
@@ -121,8 +115,6 @@ public class InquireController {
 			
 			model.addAttribute("pageMaker", pageMaker);
 		}
-		
-		
 		
 		return "/inquire/getInquireList";
 	}
@@ -245,8 +237,5 @@ public class InquireController {
 		
 		return "redirect:/getInquireList";
 	}
-	
-	
-	
 	
 }

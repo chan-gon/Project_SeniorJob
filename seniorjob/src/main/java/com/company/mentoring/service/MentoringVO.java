@@ -2,8 +2,6 @@ package com.company.mentoring.service;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import com.company.users.service.UsersVO;
-
 import lombok.Data;
 
 @Data

@@ -184,13 +184,6 @@ html {
 </script>
 <!-- 글자수세기 -->
 <script>
-	/* var total = 2000;
-	function counter() {
-		var check = document.frm.self_content.value.length;
-		var cnt = 2000 - check;
-		document.frm.cnt.value = cnt;
-	} */
-	
 	$(document).ready(function(){
 		$("textarea").keyup(function(){
 			var inputLength = $(this).val().length;

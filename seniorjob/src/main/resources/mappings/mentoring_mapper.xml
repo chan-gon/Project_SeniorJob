@@ -4,13 +4,9 @@
  
  <mapper namespace="com.company.mentoring.service.impl.MentoringMapper">
  
- <!-- 김찬곤 ============================================================================  -->
- 
- 	<!-- 김찬곤 -->
- 	<!-- 멘토링 리스트 호출 -->
- 	<!-- 송다희 수정(검색, 페이징) -->
+ 	<!-- 멘토링 리스트 호출 / 검색 / 페이징 -->
  	<select id="getMentoringList" resultType="com.company.mentoring.service.MentoringVO" parameterType="com.company.mentoring.service.MentoringVO">
- 		SELECT B.* FROM(SELECT ROWNUM RN, A.*   FROM(
+ 		SELECT B.* FROM(SELECT ROWNUM RN, A.* FROM(
  		SELECT  MENTORING_NUMBER,
  				MENTORING_NAME,
  				MENTORING_LIMIT,
@@ -64,15 +60,12 @@
  		ORDER BY RAND
  	</select>
  	
- 	
- 	<!-- 김찬곤 -->
  	<!-- 키워드 검색 -->
  	<select id="getKeywordMentoring" resultType="com.company.mentoring.service.MentoringVO">
      	SELECT * FROM MENTORING
      		WHERE MENTORING_NAME LIKE '%'||#{searchKeyword}||'%'
  	</select>
  	
- 	<!-- 김찬곤 -->
  	<!-- 멘토링 등록 -->
 	<insert id="insertMentoring" parameterType="com.company.mentoring.service.MentoringVO" >
 	
@@ -107,7 +100,6 @@
 		
 	</insert>
 	
-	<!-- 김찬곤 -->
 	<!-- 멘토의 멘토링 코스 조회 -->
 	<select id="getMentoring" resultType="com.company.mentoring.service.MentoringVO">
 		SELECT
@@ -127,7 +119,6 @@
 		WHERE MENTOR_ID = #{mentor_id}
 	</select>
 	
-	<!-- 김찬곤 -->
 	<!-- 멘토링 날짜 중복 체크 -->
 	<select id="mentoringRegisterCheck" resultType="com.company.mentoring.service.MentoringVO">
 		SELECT * 
@@ -137,14 +128,12 @@
 		AND MENTOR_ID = #{mentor_id}
 	</select>
 	
-	<!-- 김찬곤 -->
 	<!-- 진행중인 멘토링 카운트 -->
 	<select id="getMentoringCnt" resultType="int">
 		SELECT COUNT(*) FROM MENTORING
 		WHERE MENTOR_ID = #{mentor_id}
 	</select>
 	
-	<!-- 김찬곤 -->
 	<!-- 멘토링 단건 조회 -->
 	<select id="getSearchMentoringChanGon" resultType="com.company.mentoring.service.MentoringVO">
 		SELECT
@@ -175,10 +164,7 @@
 				MENTORING_NUMBER
 	</select>
 
-<!-- End of 김찬곤 ============================================================================  -->
-	
 	<!-- 멘토링 list 조회-->
-	<!-- 양소민 -->
 	<select id="getSearchMentoring" resultType="com.company.mentoring.service.MentoringVO">
 		SELECT
 				
@@ -209,7 +195,6 @@
 		ON I.MENTOR_ID=M.MENTOR_ID
 		WHERE ID=#{id}
 	</select>
-	
 	
 	<!-- 멘토링 중복 체크 -->
 	<select id="MentoringRegisterCheck" resultType="com.company.mentoring.service.MentoringVO">
@@ -254,7 +239,6 @@
 	 WHERE MENTORING_NUMBER = #{mentoring_number}
 	</select>
 	
-	<!-- 송다희 추가 -->
 	<!-- 페이징&검색 -->
 	<select id="getMcount" resultType="int">
 		SELECT COUNT(*)
@@ -286,5 +270,4 @@
 		WHERE MENTORING.MENTORING_NUMBER = SHOPPING.MENTORING_NUMBER
 		AND SHOPPING.ID = #{id}
 	</select>
-	<!-- 송다희 추가 -->
 </mapper>

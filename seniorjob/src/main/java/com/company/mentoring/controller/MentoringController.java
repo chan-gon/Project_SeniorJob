@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.company.cart.service.CartService;
 import com.company.cart.service.CartVO;
-import com.company.mentor.common.Paging;
+import com.company.mentoring.common.Paging;
 import com.company.mentor.service.MentorService;
 import com.company.mentor.service.MentorVO;
 import com.company.mentoring.service.MentoringService;
@@ -43,12 +43,9 @@ public class MentoringController {
 	@Autowired ShoppingService shoppingService;
 	@Autowired CartService cartService;
 	
-//	--------------------------------------------------------김찬곤-----------------------------------------------------------------------------------------------------
 	@Autowired CartService cartservice;
 
-	//송다희 추가=========================================
 	@Autowired Mentoring_ReviewsService mentorservice; 
-	//=================================================
 	
 	// 멘토링 검색
 	@RequestMapping("/getMentoringList")
@@ -69,7 +66,7 @@ public class MentoringController {
 		return "Mentoring/mentoringList";
 	}
 	
-	//송다희 추가=============================
+	// 멘토링 리뷰
 	@RequestMapping("/getReviewsList")
 	public @ResponseBody List<Mentoring_ReviewsVO> getReviewsList(Mentoring_ReviewsVO vo, Model model) {
 		return mentorservice.getReviewsList(vo);
@@ -195,7 +192,7 @@ public class MentoringController {
 		return "Mentoring/mentoringListWindow";
 	}
 	
-	// 멘토링 단건 조회_김찬곤
+	// 멘토링 단건 조회
 	// 송다희 추가
 	@RequestMapping("/getSearchMentoringChanGon")
 	public String getSearchMentoringChanGon(MentoringVO mtVo,MentorVO mVo, Model model, Mentoring_ReviewsVO reviewvo, HttpServletRequest req) throws IOException {
@@ -220,9 +217,7 @@ public class MentoringController {
 		return "Mentoring/getMentoring";
 	}
 	
-//	--------------------------------------------------------End of 김찬곤-----------------------------------------------------------------------------------------------------
 	
-	//양소민 추가
 	@GetMapping("/getMyMentoringListSom")   //마이페이지_내가 만든 멘토링
 	public String getSearchMentoring(MentoringVO vo, Model model, HttpServletRequest request) {
 		HttpSession session = request.getSession();
@@ -274,6 +269,5 @@ public class MentoringController {
 		model.addAttribute("list", mtService.getSearchMentoring(vo));
 		return "/Mentoring/menteeList";
 	}
-	
 	
 }

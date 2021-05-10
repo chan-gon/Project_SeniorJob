@@ -96,7 +96,6 @@ public class Mentoring_ReviewsController {
 		return list;
 	}
 
-	// 송다희 추가
 	// 멘토링 후기 등록
 	@RequestMapping("/searchShopping")
 	public @ResponseBody int searchShopping(Mentoring_ReviewsVO vo, HttpServletRequest req) {

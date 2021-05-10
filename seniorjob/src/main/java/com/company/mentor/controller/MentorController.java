@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.company.following.service.FollowService;
 import com.company.following.service.FollowingVO;
-import com.company.mentor.service.MentorSearchVO;
 import com.company.mentor.service.MentorService;
 import com.company.mentor.service.MentorVO;
 import com.company.mentoring.service.MentoringService;
@@ -26,8 +25,6 @@ public class MentorController {
 	@Autowired MentorService mentorService;
 	@Autowired MentoringService mentoringService;
 	@Autowired FollowService followService;
-	
-//	--------------------------------------------------------김찬곤-----------------------------------------------------------------------------------------------------
 	
 		// 로그인, 회원가입 미비 시 호출되는 페이지
 		// 로그아웃 상태에서 멘토등록 클릭하면 호출
@@ -113,7 +110,7 @@ public class MentorController {
 		// 멘토 세부검색(최신순, 인기순)
 		@ResponseBody
 		@RequestMapping("/optionValueChk")
-		public Map<String, Object> optionValueChk(MentorSearchVO vo) {
+		public Map<String, Object> optionValueChk(MentorVO vo) {
 			
 			Map<String, Object> map = new HashMap<String, Object>();
 			
@@ -131,5 +128,4 @@ public class MentorController {
 			}
 			return map;
 		}
-//		--------------------------------------------------------End of 김찬곤-----------------------------------------------------------------------------------------------------		
 }

@@ -37,4 +37,6 @@ public class MentorVO { //멘토
 	private UsersVO usersVO; // Users/Mentor 테이블 조인구문 사용 시 필요_김찬곤 추가
 	private FollowingVO followingVO; // 멘토리스트 세부검색:인기순 쿼리 시 필요_김찬곤 추가
 	private String searchKeyword; // 키워드 검색 파라미터_김찬곤 추가
+	
+	private String optionValue;
 }
