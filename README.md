@@ -22,4 +22,4 @@
 - 멘토링 결제 / [mentoringPayForm.jsp](https://github.com/chan-gon/Project_SeniorJob/blob/master/seniorjob/src/main/webapp/WEB-INF/views/Mentoring/mentoringPayForm.jsp)
 
 ## AWS 배포(수정중)
-[](http://3.13.124.138:8080/seniorjob/)
+[SeniorJob](http://3.13.124.138:8080/seniorjob/)
