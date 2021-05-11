@@ -21,5 +21,5 @@
 - 멘토링 등록 / [MentoringRegister.jsp](https://github.com/chan-gon/Project_SeniorJob/blob/master/seniorjob/src/main/webapp/WEB-INF/views/Mentoring/MentoringRegister.jsp)
 - 멘토링 결제 / [mentoringPayForm.jsp](https://github.com/chan-gon/Project_SeniorJob/blob/master/seniorjob/src/main/webapp/WEB-INF/views/Mentoring/mentoringPayForm.jsp)
 
-## AWS 배포(수정중)
-[SeniorJob](http://3.13.124.138:8080/seniorjob/)
+## AWS 배포
+[SeniorJob](http://3.140.70.22:8080/seniorjob)
