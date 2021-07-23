@@ -97,7 +97,7 @@ function popCareerSee() {
 <body>
 
 <!-- topHeader -->
-<jsp:include page="../topHeader.jsp" />
+<jsp:include page="${pageContext.request.contextPath}/WEB-INF/views/common/topHeader.jsp" />
 <!-- topHeader -->
 
 <form id="regForm" action="MentorRegisterProc" method="post" enctype="Multipart/form-data">
@@ -202,7 +202,7 @@ function popCareerSee() {
 </form>
 
 <!-- Footer area-->
-<jsp:include page="../footer.jsp" />
+<jsp:include page="${pageContext.request.contextPath}/WEB-INF/views/common/footer.jsp" />
 <!-- Footer area-->
 <script>
 //로딩 이미지 출력

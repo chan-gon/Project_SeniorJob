@@ -9,7 +9,7 @@
 <html class="no-js">
 <!--<![endif]-->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<jsp:include page="../topHeader.jsp"></jsp:include>
+<jsp:include page="${pageContext.request.contextPath}/WEB-INF/views/common/topHeader.jsp"></jsp:include>
 
 
 
@@ -80,7 +80,7 @@
 	</div>
 </div>
 
-<jsp:include page="../footer.jsp"></jsp:include>
+<jsp:include page="${pageContext.request.contextPath}/WEB-INF/views/common/footer.jsp"></jsp:include>
 
 </body>
 </html>

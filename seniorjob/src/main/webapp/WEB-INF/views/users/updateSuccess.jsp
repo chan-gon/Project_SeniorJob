@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html class="no-js">
-<jsp:include page="../topHeader.jsp"></jsp:include>
+<jsp:include page="${pageContext.request.contextPath}/WEB-INF/views/common/topHeader.jsp"></jsp:include>
 <body>
 
 	<div class="content-area error-page"
@@ -25,7 +25,7 @@
 		</div>
 	</div>
 
-	<jsp:include page="../footer.jsp"></jsp:include>
+	<jsp:include page="${pageContext.request.contextPath}/WEB-INF/views/common/footer.jsp"></jsp:include>
 
 </body>
 </html>

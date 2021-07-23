@@ -245,7 +245,7 @@ function chatt() {
 </head>
 <body>
 	<!-- topHeader -->
-	<jsp:include page="topHeader.jsp" />
+	<jsp:include page="${pageContext.request.contextPath}/WEB-INF/views/common/topHeader.jsp" />
 	<!-- 영상통화 구현. 절대 지우지 마세요 . 양소민-->
 	<div class="dropdown" id="slidemenu" ></div>
 	
@@ -531,6 +531,6 @@ function chatt() {
 	<script src="resources/assets/js/main.js"></script>
 	
 	
-	<jsp:include page="footer.jsp"></jsp:include>
+	<jsp:include page="${pageContext.request.contextPath}/WEB-INF/views/common/footer.jsp"></jsp:include>
 </body>	
 </html>

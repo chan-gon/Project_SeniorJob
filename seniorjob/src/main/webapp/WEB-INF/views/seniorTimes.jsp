@@ -8,7 +8,7 @@
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!-->
 <html class="no-js">
-<jsp:include page="topHeader.jsp"></jsp:include>
+<jsp:include page="${pageContext.request.contextPath}/WEB-INF/views/common/topHeader.jsp"></jsp:include>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
 function openWindowPop(url, name){
@@ -144,7 +144,7 @@ div#btnList .btn-default{
 						<br>
 						
 							<table class="table table-hover">
-								<c:forEach items="${seniorTimes }" var="b">
+								<c:forEach items="${ seniorTimes }" var="b">
 									<tr>
 										<td colspan="4" width="800"><p><strong>${b.title }</strong></p></td>
 									</tr>
@@ -161,6 +161,6 @@ div#btnList .btn-default{
 			</div>
 		</div>
 	</div>
-	<jsp:include page="footer.jsp"></jsp:include>
+	<jsp:include page="${pageContext.request.contextPath}/WEB-INF/views/common/footer.jsp"></jsp:include>
 </body>
 </html>

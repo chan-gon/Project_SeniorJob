@@ -4,7 +4,7 @@
 <html class="no-js">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
-<jsp:include page="../topHeader.jsp" />
+<jsp:include page="${pageContext.request.contextPath}/WEB-INF/views/common/topHeader.jsp" />
  <head>
    <link href='resources/fullcalendar/lib/main.css' rel='stylesheet' />
     <script src='resources/fullcalendar/lib/main.js'></script>
@@ -384,7 +384,7 @@ function reply() {
 		</div>
 	</div>
 
-	<jsp:include page="../footer.jsp"></jsp:include>
+	<jsp:include page="${pageContext.request.contextPath}/WEB-INF/views/common/footer.jsp"></jsp:include>
 
 </body>
 </html>

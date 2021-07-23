@@ -9,7 +9,7 @@
 <body>
 
 <!-- topHeader -->
-<jsp:include page="../topHeader.jsp" />
+<jsp:include page="${pageContext.request.contextPath}/WEB-INF/views/common/topHeader.jsp" />
 <!-- topHeader -->
 
 <script>
@@ -20,7 +20,7 @@
 </script>
 
 <!-- Footer area-->
-<jsp:include page="../footer.jsp" />
+<jsp:include page="${pageContext.request.contextPath}/WEB-INF/views/common/footer.jsp" />
 <!-- Footer area-->
 
 </body>

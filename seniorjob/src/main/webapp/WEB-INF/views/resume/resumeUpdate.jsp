@@ -91,7 +91,7 @@
 	}
 	
 </script>
-<jsp:include page="../topHeader.jsp"></jsp:include>
+<jsp:include page="${pageContext.request.contextPath}/WEB-INF/views/common/topHeader.jsp"></jsp:include>
 <style>
 	.select_img img{width: 90px; height:90px; margin:20px 0;}
 </style>
@@ -303,7 +303,7 @@
                 </div>
             </div>
         </div>
-		<jsp:include page="../footer.jsp"></jsp:include>
+		<jsp:include page="${pageContext.request.contextPath}/WEB-INF/views/common/footer.jsp"></jsp:include>
 		
 		<!-- 자격증 추가(숨겨둔 자격증을 추가) -->
 		<div style="display: none" class="certi_temp"> 

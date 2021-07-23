@@ -11,7 +11,7 @@
 </head>
 
 <!-- topHeader -->
-<jsp:include page="../topHeader.jsp" />
+<jsp:include page="${pageContext.request.contextPath}/WEB-INF/views/common/topHeader.jsp" />
 <!-- topHeader -->
 
 <style>
@@ -298,10 +298,8 @@ p.c-application.c-typography.edu-detail--summary-define-text.c_body1 {
                                 </div>
                             </div>
 							<!-- End of 장바구니담기/결제하기  -->
-
                         </aside>
                     </div>
-
             </div>
         </div>
 </form>
@@ -421,7 +419,7 @@ $(document).on("click", "#content", function(){
 })
 </script>
 <!-- Footer area-->
-<jsp:include page="../footer.jsp" />
+<jsp:include page="${pageContext.request.contextPath}/WEB-INF/views/common/footer.jsp" />
 <!-- Footer area-->
 </body>
 </html>

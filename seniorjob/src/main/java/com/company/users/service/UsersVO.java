@@ -45,20 +45,19 @@ public class UsersVO { //회원테이블
 	private Date log_date; //가입일
 	private String distinction;
 	private String accesstoken;
-	
-			//양소민 추가
-			//비밀번호 변경 시 필요
-			private String passwordold; //예전 비밀번호
-			private String passwordck; //비밀번호 확인
-		
-			//자격증,경력증명서 등록,조회시 필요
-			private String no; //자격증, 경력증명서 no
-			private String certi_name;		//자격증명
-			private String certi_place;		//발행처/기관
-			private String certi_no;		//자격증번호
-			private String certi_date;		//취득일
-			private String carrer_certi;    //경력증명서
-			
-			//file타입의 값을 담을 vo
-			private MultipartFile[] uploadFile;
+
+	// 비밀번호 변경 시 필요
+	private String passwordold; // 예전 비밀번호
+	private String passwordck; // 비밀번호 확인
+
+	// 자격증,경력증명서 등록,조회시 필요
+	private String no; // 자격증, 경력증명서 no
+	private String certi_name; // 자격증명
+	private String certi_place; // 발행처/기관
+	private String certi_no; // 자격증번호
+	private String certi_date; // 취득일
+	private String carrer_certi; // 경력증명서
+
+	// file타입의 값을 담을 vo
+	private MultipartFile[] uploadFile;
 }

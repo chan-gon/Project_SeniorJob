@@ -101,7 +101,7 @@ border-radius: 1px;
     background-color: white;
 }
 </style>
-<jsp:include page="../../topHeader.jsp"></jsp:include>
+<jsp:include page="${pageContext.request.contextPath}/WEB-INF/views/common/topHeader.jsp"></jsp:include>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 
@@ -244,7 +244,7 @@ border-radius: 1px;
 		</div>
 	</div>
 
-	<jsp:include page="../../footer.jsp"></jsp:include>
+	<jsp:include page="${pageContext.request.contextPath}/WEB-INF/views/common/footer.jsp"></jsp:include>
 <script>
 //카테고리 체크검색(결제/환불/신청...)
 

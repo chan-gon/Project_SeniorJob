@@ -25,7 +25,7 @@
 	}
 	
 </script>
-<jsp:include page="../topHeader.jsp" />
+<jsp:include page="${pageContext.request.contextPath}/WEB-INF/views/common/topHeader.jsp" />
 
 <body>
 	
@@ -88,7 +88,7 @@
             </div>
         </div>
 
-<jsp:include page="../footer.jsp"></jsp:include>
+<jsp:include page="${pageContext.request.contextPath}/WEB-INF/views/common/footer.jsp"></jsp:include>
 	
     </body>
 </html>

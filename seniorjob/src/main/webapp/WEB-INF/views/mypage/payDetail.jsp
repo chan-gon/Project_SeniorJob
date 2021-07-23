@@ -14,7 +14,7 @@ function detail(num) {
 	window.open(url);
 }
 </script>
- <jsp:include page="../topHeader.jsp"></jsp:include>
+ <jsp:include page="${pageContext.request.contextPath}/WEB-INF/views/common/topHeader.jsp"></jsp:include>
     <body>
 
   
@@ -75,7 +75,7 @@ function detail(num) {
         </div>
 
   
-<jsp:include page="../footer.jsp"></jsp:include>
+<jsp:include page="${pageContext.request.contextPath}/WEB-INF/views/common/footer.jsp"></jsp:include>
 
     </body>
 </html>

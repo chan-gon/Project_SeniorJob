@@ -225,7 +225,7 @@ div#intro154w {
 </head>
 <body>
 <!-- topHeader -->
-<jsp:include page="../topHeader.jsp" />
+<jsp:include page="${pageContext.request.contextPath}/WEB-INF/views/common/topHeader.jsp" />
 <!-- topHeader -->
 
 	<br>
@@ -433,7 +433,7 @@ div#intro154w {
       	<!-- 모달 팝업 -->     	
       	
 <!-- Footer area-->
-<jsp:include page="../footer.jsp" />
+<jsp:include page="${pageContext.request.contextPath}/WEB-INF/views/common/footer.jsp" />
 <!-- Footer area-->		
 
 <script>
